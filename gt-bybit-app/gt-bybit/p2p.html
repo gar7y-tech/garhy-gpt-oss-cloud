@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#06101F" />
   <meta name="color-scheme" content="dark light" />
-  <script src="/gt-bybit/preferences-bootstrap.js?v=20260926-ux1"></script>
+  <script src="/gt-bybit/preferences-bootstrap.js?v=20260928-p2p1"></script>
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="referrer" content="no-referrer" />
   <title>GT CRYPTO APIs · P2P Control</title>
-  <link rel="stylesheet" href="/gt-bybit/p2p-console.css?v=20260926-ux1" />
-  <link rel="stylesheet" href="/gt-bybit/brand.css?v=20260926-ux1" />
+  <link rel="stylesheet" href="/gt-bybit/p2p-console.css?v=20260928-p2p1" />
+  <link rel="stylesheet" href="/gt-bybit/brand.css?v=20260928-p2p1" />
 </head>
 <body>
   <a class="skip-link" href="#mainContent">تخطَّ إلى المحتوى الرئيسي</a>
@@ -39,7 +39,7 @@
         <button id="connectBtn" class="btn primary" type="button">فتح جلسة P2P</button>
       </div>
       <p id="loginFeedback" class="login-feedback" role="status" aria-live="polite" hidden></p>
-      <div class="security-line">Control Token يبقى في ذاكرة الصفحة فقط ولا يوجد قفل تلقائي بمرور الوقت. تنتهي الجلسة عند تسجيل الخروج أو إغلاق/تحديث الصفحة.</div>
+      <div class="security-line">تستخدم هذه الصفحة جلسة التحكم المحمية نفسها في GT CRYPTO APIs. لا يُحفَظ رمز التحكم داخل المتصفح، وتبقى الجلسة بعد التحديث حتى تسجيل الخروج أو انتهاء صلاحيتها.</div>
       <div class="corporate-endorsement"><strong>GARHY TECH</strong><span>GT CRYPTO APIs · Financial Operations</span></div>
     </section>
 
@@ -59,7 +59,8 @@
 
       <div id="permissionAlert" class="alert warning hidden">
         <strong>P2P Open API غير متاح حاليًا</strong>
-        <span>الواجهة جاهزة، لكنها ستظل في وضع الانتظار حتى تفتح Bybit صلاحيات FiatP2POrder وAdvertising للمفتاح.</span>
+        <span>حالة «معلن عام» وحدها لا تثبت تشغيل Open API. تحقّق من قبول طلب P2P Open API ومن تمكين صلاحيات P2P للمفتاح في موقع Bybit؛ لا تُنشئ مفتاحًا داخل هذه الصفحة.</span>
+        <a href="https://www.bybit.com/en/help-center/article/Introduction-to-P2P-Open-API" target="_blank" rel="noopener noreferrer">خطوات التفعيل الرسمية من Bybit</a>
       </div>
 
       <section class="metrics">
@@ -165,8 +166,8 @@
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/gt-bybit/preferences.js?v=20260926-ux1"></script>
-  <script src="/gt-bybit/receipts.js?v=20260926-ux1"></script>
-  <script src="/gt-bybit/p2p-console.js?v=20260926-ux1" defer></script>
+  <script src="/gt-bybit/preferences.js?v=20260928-p2p1"></script>
+  <script src="/gt-bybit/receipts.js?v=20260928-p2p1"></script>
+  <script src="/gt-bybit/p2p-console.js?v=20260928-p2p1" defer></script>
 </body>
 </html>
