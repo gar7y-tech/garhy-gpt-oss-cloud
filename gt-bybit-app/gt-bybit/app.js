@@ -14,6 +14,22 @@ const NOTIFICATION_ON='enabled';
 const NOTIFICATION_OFF='disabled';
 const sessionChannel='BroadcastChannel' in window ? new BroadcastChannel('gt-bybit-session') : null;
 let toastTimer;
+function loginFeedback(message='') {
+  const el=$('loginFeedback');el.textContent=message;el.hidden=!message;
+  $('controlToken').setAttribute('aria-invalid',String(Boolean(message)));
+}
+function concealToken(){
+  $('controlToken').type='password';$('toggleToken').textContent='إظهار';
+  $('toggleToken').setAttribute('aria-label','إظهار رمز التحكم');$('toggleToken').setAttribute('aria-pressed','false');
+}
+$('toggleToken').addEventListener('click',()=>{
+  const shown=$('controlToken').type==='password';
+  $('controlToken').type=shown?'text':'password';
+  $('toggleToken').textContent=shown?'إخفاء':'إظهار';
+  $('toggleToken').setAttribute('aria-label',shown?'إخفاء رمز التحكم':'إظهار رمز التحكم');
+  $('toggleToken').setAttribute('aria-pressed',String(shown));
+});
+$('controlToken').addEventListener('input',()=>loginFeedback());
 function toast(message,kind='info') {
   const el=$('toast'); el.textContent=message; el.dataset.kind=kind; el.dataset.show='true';
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>{el.dataset.show='false';},6500);
@@ -123,18 +139,23 @@ function clearQuote() { state.quote=null; clearTimeout(state.quoteTimer); $('con
 function lockLocal() {
   state.generation++;state.session=null;state.csrf='';state.attempts.clear();clearQuote();
   $('controlToken').value='';
+  concealToken();loginFeedback();
   if($('confirmDialog').open) $('confirmDialog').close('cancel');
   for(const id of ['walletTable','positionsTable','ordersTable','availableAssets']) $(id).textContent='افتح الجلسة لعرض البيانات.';
   for(const id of ['mEquity','mWallet','mPositions','mOrders','identityUid','identityKyc','identityRegion','identityMaster','identityParent','identityVip','identityUnified','identityReadOnly']) $(id).textContent='—';
   $$('form').forEach((form)=>form.reset());setUnlocked(false);setStatus('idle','مقفلة');$('pageTitle').textContent='GT CRYPTO APIs';
 }
-function navigate(view) {
+function navigate(view,{focus=false}={}) {
   const target=VIEW_TITLES[view]?view:'overview';
   $$('[data-view-panel]').forEach((panel)=>{const active=panel.dataset.viewPanel===target;panel.hidden=!active;panel.classList.toggle('active',active);});
   $$('[data-view]').forEach((button)=>{if(button.dataset.view===target)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');});
   $('pageTitle').textContent=VIEW_TITLES[target];
   const url=new URL(location.href);url.search=target==='overview'?'':new URLSearchParams({view:target}).toString();history.replaceState(null,'',url.pathname+url.search);
   window.scrollTo({top:0,behavior:'instant'});
+  if(focus){
+    const heading=document.querySelector(`[data-view-panel="${target}"] h1,[data-view-panel="${target}"] h2`);
+    if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});}
+  }
   if(state.authenticated && target==='trade') loadOrders().catch((e)=>toast(e.message,'error'));
   if(state.authenticated && target==='assets') loadAssets().catch((e)=>toast(e.message,'error'));
 }
@@ -149,10 +170,11 @@ async function applySession(session) {
 async function connect() {
   if(state.pending.has('connect'))return;
   const input=$('controlToken');
-  if(!input.value.trim())return toast('أدخل رمز التحكم أولًا.','error');
+  if(!input.value.trim()){loginFeedback('أدخل رمز التحكم أولًا.');input.focus();return;}
+  loginFeedback();concealToken();
   state.pending.add('connect');$('connectBtn').disabled=true;$('connectBtn').textContent='جارٍ التحقق…';
   try { const body={controlToken:input.value.trim()};input.value='';const session=await api('login',{body,allowLocked:true});body.controlToken='';await applySession(session);sessionChannel?.postMessage('changed');toast('تم فتح جلسة التحكم.','success');await notify('تنبيه أمان GT CRYPTO APIs','تم فتح جلسة تحكم جديدة.','gt-bybit-login'); }
-  catch(error) {toast(error.message,'error');}
+  catch(error) {loginFeedback(error.message);input.focus();}
   finally {input.value='';state.pending.delete('connect');$('connectBtn').disabled=false;$('connectBtn').textContent='فتح الجلسة';}
 }
 async function logout() {
@@ -303,7 +325,7 @@ $('disconnectBtn').addEventListener('click',logout);$('lockSettingsBtn').addEven
 $('refreshBtn').addEventListener('click',()=>refreshDashboard());$('overviewRefresh').addEventListener('click',()=>refreshDashboard());
 $('reloadOrdersBtn').addEventListener('click',()=>loadOrders().catch((e)=>toast(e.message,'error')));
 $('ordersCategory').addEventListener('change',()=>loadOrders().catch((e)=>toast(e.message,'error')));
-$$('[data-view]').forEach((button)=>button.addEventListener('click',()=>{if(state.authenticated)navigate(button.dataset.view);}));
+$$('[data-view]').forEach((button)=>button.addEventListener('click',()=>{if(state.authenticated)navigate(button.dataset.view,{focus:true});}));
 for(const [id,action] of Object.entries({orderForm:'place-order',leverageForm:'set-leverage',stopForm:'set-trading-stop',modeForm:'set-position-mode',transferForm:'transfer',cancelAllForm:'cancel-all'})) {
   $(id).addEventListener('submit',(event)=>{event.preventDefault();const data={action,...formObject(event.currentTarget)};if(data.orderType==='Market')delete data.price;runMutation(event.currentTarget.querySelector('[type="submit"]'),data,()=>refreshDashboard(false));});
 }

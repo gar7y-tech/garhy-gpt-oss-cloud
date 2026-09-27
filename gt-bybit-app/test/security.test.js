@@ -17,6 +17,24 @@ test('new production domain accepts same-origin control while untrusted origins 
   assert.throws(()=>verifyOrigin({headers:{origin:'https://crypto.garhy.tech','sec-fetch-site':'cross-site'}},{}),{code:'ORIGIN_DENIED'});
 });
 
+test('preview accepts only its own Vercel deployment origin for control login',async()=>{
+  const hostname='gtbybit-example-garhy.vercel.app';
+  const env={...fixtureEnv(),VERCEL_ENV:'preview',VERCEL_URL:hostname};
+  const headers={origin:`https://${hostname}`,host:hostname,'sec-fetch-site':'same-origin'};
+  assert.doesNotThrow(()=>verifyOrigin({headers},env));
+  for(const invalid of [
+    {...headers,origin:'https://evil.example'},
+    {...headers,host:'other-preview.vercel.app'},
+    {...headers,'sec-fetch-site':'cross-site'},
+    {...headers,origin:'https://other-garhy.vercel.app',host:'other-garhy.vercel.app'},
+  ])assert.throws(()=>verifyOrigin({headers:invalid},env),{code:'ORIGIN_DENIED'});
+  assert.throws(()=>verifyOrigin({headers},{...env,VERCEL_ENV:'production'}),{code:'ORIGIN_DENIED'});
+  const handler=createHandler({env,store:memoryStore(),request:mockRequest([])});
+  const login=await invoke(handler,{method:'POST',body:{action:'login',controlToken:env.BYBIT_CONTROL_TOKEN},headers});
+  assert.equal(login.statusCode,200);
+  assert.equal(login.body.authenticated,true);
+});
+
 test('opaque cookie is Secure HttpOnly Strict; credentials never returned',async()=>{
   const s=await setup();assert.equal(s.login.statusCode,200);
   for(const flag of ['Secure','HttpOnly','SameSite=Strict','Path=/','Max-Age=2592000'])assert.ok(s.login.headers['set-cookie'].includes(flag));

@@ -130,3 +130,29 @@ html[data-theme="light"] .receipt-dialog pre{color:#274663}
   .receipt-actions{flex-direction:column}
   .receipt-actions a,.receipt-actions .btn{width:100%;justify-content:center}
 }
+
+/* Keyboard access and clear login feedback in both GT CRYPTO APIs consoles. */
+.skip-link{position:fixed;z-index:100;top:-100px;inset-inline-start:12px;padding:10px 14px;border-radius:12px;background:#f4f8ff;color:#06101f;font-weight:800;text-decoration:none}
+.skip-link:focus{top:12px}
+.token-field{min-width:0;display:grid;gap:7px}
+.token-field>label{font-size:12px;font-weight:700;color:#adc1db}
+.token-field__controls{display:flex;min-width:0;gap:8px}
+.token-field__controls input{min-width:0;flex:1 1 auto}
+.token-toggle{flex:0 0 auto;min-width:60px;min-height:46px;padding:0 12px;border:1px solid rgba(117,170,231,.3);border-radius:13px;background:rgba(12,43,81,.9);color:#e8f4ff;font-size:13px;font-weight:700;cursor:pointer}
+.token-toggle:hover,.token-toggle[aria-pressed="true"]{border-color:#51baff;background:rgba(21,83,145,.9)}
+.token-toggle:focus-visible{outline:3px solid #14dff4;outline-offset:2px}
+.login-feedback{margin:12px 0 0!important;padding:10px 12px;border:1px solid rgba(255,131,146,.48);border-radius:12px;background:rgba(110,29,44,.24);color:#ffd2d9!important;font-size:13px!important;line-height:1.7}
+.token-field__controls input[aria-invalid="true"]{border-color:#ff8392}
+html[data-theme="light"] .token-field>label{color:#47627f}
+html[data-theme="light"] .token-toggle{background:#edf5ff;color:#143e69;border-color:#adcbe6}
+html[data-theme="light"] .login-feedback{background:#fff0f2;color:#91314b!important}
+.switch{position:relative}
+.switch input[type="checkbox"]{display:block;position:absolute;width:42px;height:44px;inset-inline-start:0;top:50%;transform:translateY(-50%);margin:0;opacity:0;cursor:pointer;z-index:1}
+.switch:focus-within span{outline:3px solid #14dff4;outline-offset:3px}
+@media(max-width:620px){
+  .topbar{flex-wrap:wrap}
+  .topbar .brand{min-width:0;flex:1 1 150px}
+  .top-actions{flex:1 1 auto}
+  .login-grid{grid-template-columns:minmax(0,1fr)}
+  .token-field__controls input{font-size:16px}
+}

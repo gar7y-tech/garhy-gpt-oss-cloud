@@ -1,7 +1,10 @@
 const API = '/api/p2p';
+const SESSION_API='/api/bybit';
 const POLL_MS = 30000;
 
-let controlToken = '';
+let sessionActive=false;
+let csrfToken='';
+const mutationAttempts=new Map();
 let pollTimer = null;
 let knownPendingIds = new Set();
 let initializedPendingSnapshot = false;
@@ -48,12 +51,12 @@ function formObject(form) {
 
 async function request(payload) {
   if (!navigator.onLine) throw new Error('لا يوجد اتصال بالإنترنت.');
-  if (!controlToken) throw new Error('جلسة P2P مقفلة.');
+  if (!sessionActive || !csrfToken) throw new Error('افتح جلسة التحكم أولًا.');
   const response = await fetch(API, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${controlToken}`,
+      'X-CSRF-Token':csrfToken,
     },
     credentials: 'same-origin',
     cache: 'no-store',
@@ -64,6 +67,7 @@ async function request(payload) {
     const error = new Error(data.message || data.error || `HTTP ${response.status}`);
     error.status = response.status;
     error.data = data;
+    if(response.status===401)logout('انتهت جلسة التحكم. افتحها من جديد.');
     throw error;
   }
   return data;
@@ -72,7 +76,11 @@ async function request(payload) {
 async function financialRequest(payload) {
   if(accountFrozen){showFrozenNotice();const error=new Error(frozenMessage());error.code='ACCOUNT_FROZEN';throw error;}
   if(demoMode){showDemoNotice();const error=new Error(demoMessage());error.code='PRESENTATION_MODE_MUTATION_BLOCKED';throw error;}
-  const response=await request({...payload,confirmed:true,requestId:crypto.randomUUID()});
+  const fingerprint=JSON.stringify(payload);
+  const requestId=mutationAttempts.get(fingerprint)||crypto.randomUUID();
+  mutationAttempts.set(fingerprint,requestId);
+  const response=await request({...payload,confirmed:true,requestId});
+  mutationAttempts.delete(fingerprint);
   window.GTReceipts?.present(response.receipt);
   return response;
 }
@@ -247,17 +255,17 @@ function renderMessages(payload) {
 async function checkStatus() {
   try {
     const result = await request({ action: 'status' });
-    $('mApi').textContent = 'متاح';
-    $('mApiSub').textContent = 'P2P Open API active';
     accountFrozen=result.accountFrozen===true;demoMode=result.financialDataMode==='presentation';
+    $('mApi').textContent = result.available===true?'متاح':'عرض فقط';
+    $('mApiSub').textContent = result.available===true?'P2P Open API active':'لم يتم التحقق من صلاحيات P2P الحية';
     $('capabilityText').textContent = demoMode ? 'العرض الحالي ثابت؛ المراقبة المالية الحية والعمليات المالية محظورة.' : accountFrozen ? 'الحساب مجمد مؤقتا. العرض والمراقبة متاحان لكن جميع العمليات المالية محظورة حتى مراجعة فريق الدعم.' : 'P2P Open API متاح للحساب. المراقبة الآلية تعمل، والعمليات الحساسة ما زالت يدوية.';
     $('permissionAlert').classList.add('hidden');
     setState((demoMode||accountFrozen)?'error':'ok',demoMode?'عرض ثابت':accountFrozen?'الحساب مجمد':'P2P متصل');
     return result;
   } catch (error) {
     $('mApi').textContent = 'مغلق';
-    $('mApiSub').textContent = error.data?.retCode ? `Bybit retCode ${error.data.retCode}` : 'Awaiting permissions';
-    $('capabilityText').textContent = 'التطبيق جاهز، لكن Bybit لم تفتح صلاحيات P2P Open API للمفتاح بعد.';
+    $('mApiSub').textContent = Number.isInteger(error.data?.retCode) ? `Bybit retCode ${error.data.retCode}` : 'لم يتم التحقق من الصلاحيات';
+    $('capabilityText').textContent = error.data?.error==='PERMISSION_DENIED' ? 'تسجيل الدخول يعمل، لكن المفتاح أو حساب المعلن لا يملك صلاحيات P2P Open API المطلوبة.' : `تعذر التحقق من P2P Open API: ${error.message}`;
     $('permissionAlert').classList.remove('hidden');
     setState('error', 'P2P غير متاح');
     throw error;
@@ -279,7 +287,7 @@ async function refreshAds(showToast = false) {
 }
 
 async function refreshAll(showToast = false) {
-  if (!controlToken) return;
+  if (!sessionActive) return;
   try {
     await checkStatus();
     if(demoMode){
@@ -308,7 +316,7 @@ async function refreshAll(showToast = false) {
 
 function startPolling() {
   stopPolling();
-  if (!$('autoRefresh').checked || !controlToken) return;
+  if (!$('autoRefresh').checked || !sessionActive) return;
   pollTimer = setInterval(() => {
     if (document.visibilityState === 'visible' && navigator.onLine) refreshAll(false);
   }, POLL_MS);
@@ -325,12 +333,14 @@ function unlock() {
   startPolling();
 }
 
-function logout(message = 'تم تسجيل الخروج ومسح Control Token من ذاكرة الصفحة.') {
-  controlToken = '';
+function logout(message = 'تم تسجيل الخروج وإنهاء جلسة التحكم.') {
+  sessionActive=false;csrfToken='';
+  mutationAttempts.clear();
   knownPendingIds = new Set();
   initializedPendingSnapshot = false;
   stopPolling();
   $('controlToken').value = '';
+  concealToken();loginFeedback();
   $('console').classList.add('hidden');
   $('authGate').classList.remove('hidden');
   setState('idle', 'مقفلة');
@@ -339,35 +349,57 @@ function logout(message = 'تم تسجيل الخروج ومسح Control Token �
 
 async function connect() {
   const token = $('controlToken').value.trim();
-  if (!token) return toast('أدخل Control Token أولًا.', 'error');
-  controlToken = token;
+  if (!token) { loginFeedback('أدخل رمز التحكم أولًا.'); $('controlToken').focus(); return; }
+  loginFeedback();concealToken();
   $('connectBtn').disabled = true;
   $('connectBtn').textContent = 'جارٍ التحقق…';
   try {
-    await checkStatus();
+    const response=await fetch(SESSION_API,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',cache:'no-store',body:JSON.stringify({action:'login',controlToken:token})});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok || !result.ok || !result.csrfToken)throw new Error(result.message || 'تعذر فتح جلسة التحكم.');
+    csrfToken=result.csrfToken;sessionActive=true;
     $('controlToken').value = '';
     unlock();
     await refreshAll(false);
-    toast('تم فتح جلسة P2P بنجاح.', 'success');
+    toast($('mApi').textContent==='متاح'?'تم فتح الجلسة والتحقق من P2P Open API.':'الجلسة مفتوحة؛ صلاحيات P2P الحية قيد التحقق أو غير متاحة.',$('mApi').textContent==='متاح'?'success':'info');
   } catch (error) {
-    if (error.status === 401) {
-      controlToken = '';
-      setState('error', 'Token غير صحيح');
-      toast('Control Token غير صحيح.', 'error');
-    } else {
-      $('controlToken').value = '';
-      unlock();
-      toast('تم فتح الواجهة، لكن صلاحيات P2P ما زالت مغلقة من Bybit.', 'error');
-    }
+    $('controlToken').value='';
+    loginFeedback(error.message);$('controlToken').focus();
   } finally {
     $('connectBtn').disabled = false;
     $('connectBtn').textContent = 'فتح جلسة P2P';
   }
 }
 
+function loginFeedback(message = '') {
+  $('loginFeedback').textContent = message;
+  $('loginFeedback').hidden = !message;
+  $('controlToken').setAttribute('aria-invalid', String(Boolean(message)));
+}
+function concealToken() {
+  $('controlToken').type = 'password';
+  $('toggleToken').textContent = 'إظهار';
+  $('toggleToken').setAttribute('aria-label', 'إظهار رمز التحكم');
+  $('toggleToken').setAttribute('aria-pressed', 'false');
+}
+$('toggleToken').addEventListener('click', () => {
+  const shown = $('controlToken').type === 'password';
+  $('controlToken').type = shown ? 'text' : 'password';
+  $('toggleToken').textContent = shown ? 'إخفاء' : 'إظهار';
+  $('toggleToken').setAttribute('aria-label', shown ? 'إخفاء رمز التحكم' : 'إظهار رمز التحكم');
+  $('toggleToken').setAttribute('aria-pressed', String(shown));
+});
+$('controlToken').addEventListener('input', () => loginFeedback());
 $('connectBtn').addEventListener('click', connect);
 $('controlToken').addEventListener('keydown', (event) => { if (event.key === 'Enter') connect(); });
-$('logoutBtn').addEventListener('click', () => logout());
+$('logoutBtn').addEventListener('click',async()=>{
+  if(!sessionActive)return;
+  try{
+    const response=await fetch(SESSION_API,{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},credentials:'same-origin',cache:'no-store',body:JSON.stringify({action:'logout'})});
+    if(!response.ok)throw new Error('تعذر تأكيد تسجيل الخروج على الخادم. حاول مجددًا.');
+    logout();
+  }catch(error){toast(error.message,'error');}
+});
 $('refreshBtn').addEventListener('click', () => refreshAll(true));
 $('pendingRefresh').addEventListener('click', async () => {
   try { await refreshPending(true); } catch (error) { toast(error.message, 'error'); }
@@ -492,13 +524,23 @@ $('releaseForm').addEventListener('submit', async (event) => {
 function updateConnectivity() {
   $('offlineBanner').classList.toggle('hidden', navigator.onLine);
   if (!navigator.onLine) setState('error', 'Offline');
-  else if (controlToken) setState('ok', 'جلسة مفتوحة');
+  else if (sessionActive) setState('idle', 'جارٍ التحقق من P2P');
 }
 
-window.addEventListener('online', () => { updateConnectivity(); if (controlToken) refreshAll(false); });
+window.addEventListener('online', () => { updateConnectivity(); if (sessionActive) refreshAll(false); });
 window.addEventListener('offline', updateConnectivity);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && controlToken && $('autoRefresh').checked) refreshAll(false);
+  if (document.visibilityState === 'visible' && sessionActive && $('autoRefresh').checked) refreshAll(false);
 });
 
+async function restoreSession(){
+  try{
+    const response=await fetch(`${SESSION_API}?action=session`,{credentials:'same-origin',cache:'no-store'});
+    const result=await response.json();
+    if(response.ok && result.authenticated===true && result.csrfToken){
+      csrfToken=result.csrfToken;sessionActive=true;unlock();await refreshAll(false);
+    }
+  }catch{setState('error','تعذر التحقق من الجلسة');}
+}
 updateConnectivity();
+restoreSession();
