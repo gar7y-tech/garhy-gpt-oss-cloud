@@ -211,6 +211,23 @@ test('Bybit signs exact transmitted bytes, omits GET body, and does not follow r
   await client('GET','/v5/account/info',{symbol:'BTC-TEST',limit:20});await client('POST','/v5/order/create',{category:'spot',qty:'0.001'});assert.equal(seen,2);
   assert.equal(buildQuery({z:'x y',a:'A+B'}),'a=A%2BB&z=x+y');
 });
+test('P2P accepts the documented snake case envelope and reports permission errors safely',async()=>{
+  const env=fixtureEnv(),calls=[];
+  const client=createBybitClient({env,fetchImpl:async(url,options)=>{
+    calls.push({url,options});
+    return new Response(JSON.stringify({ret_code:0,ret_msg:'SUCCESS',result:{items:[]}}));
+  }});
+  assert.deepEqual((await client('POST','/v5/p2p/order/simplifyList',{page:1,size:20})).result.items,[]);
+  assert.equal(calls[0].options.body,'{"page":1,"size":20}');
+  const denied=createBybitClient({env,fetchImpl:async()=>new Response(JSON.stringify({ret_code:10005,ret_msg:env.BYBIT_API_SECRET}),{status:200})});
+  await assert.rejects(()=>denied('POST','/v5/p2p/user/personal/info',{}),(error)=>{
+    assert.equal(error.code,'PERMISSION_DENIED');assert.equal(error.extra.retCode,10005);
+    assert.ok(!error.message.includes(env.BYBIT_API_SECRET));return true;
+  });
+  const malformed=createBybitClient({env,fetchImpl:async()=>new Response(JSON.stringify({ret_code:0,retCode:10005,result:{}}))});
+  await assert.rejects(()=>malformed('POST','/v5/p2p/user/personal/info',{}),(error)=>error.code==='MALFORMED_UPSTREAM');
+  await assert.rejects(()=>client('GET','/v5/p2p/../../v5/order/create'),(error)=>error.code==='INVALID_UPSTREAM_REQUEST');
+});
 test('normalized Bybit errors never reflect raw error messages or secrets',async()=>{
   const env=fixtureEnv();
   for(const code of [10003,10005,10006,10000,110007,10029,170137,110013,110024,10014,131203,32023]){

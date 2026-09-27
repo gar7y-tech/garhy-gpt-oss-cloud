@@ -46,8 +46,9 @@ export function signHmac({ timestamp, apiKey, recvWindow, payload, apiSecret }) 
   return crypto.createHmac('sha256', apiSecret).update(`${timestamp}${apiKey}${recvWindow}${payload}`).digest('hex');
 }
 
-function upstreamError(data, status) {
-  const retCode = typeof data?.retCode === 'number' ? data.retCode : null;
+function upstreamError(data, status, p2p = false) {
+  const value = p2p && typeof data?.ret_code === 'number' ? data.ret_code : data?.retCode;
+  const retCode = typeof value === 'number' ? value : null;
   let info = MESSAGES.find(([codes]) => codes.includes(retCode));
   // Only use upstream text for classification; never reflect it to the client or logs.
   if (retCode === 10001 && /position idx|position mode/i.test(data?.retMsg || '')) info = [[], 'POSITION_MODE_MISMATCH', 'اختيار جهة المركز لا يطابق وضع الحساب.', 400];
@@ -60,7 +61,8 @@ function upstreamError(data, status) {
 export function createBybitClient({ env = process.env, fetchImpl = fetch, now = Date.now } = {}) {
   return async function request(method, path, payload = {}) {
     const config = getBybitConfig(env);
-    assert(['GET', 'POST'].includes(method) && /^\/v5\/[a-z0-9/-]+$/.test(path), 'INVALID_UPSTREAM_REQUEST', 'طلب الخادم غير صالح.', 500);
+    assert(['GET', 'POST'].includes(method) && /^\/v5\/[a-zA-Z0-9/-]+$/.test(path), 'INVALID_UPSTREAM_REQUEST', 'طلب الخادم غير صالح.', 500);
+    const p2p = path.startsWith('/v5/p2p/');
     const timestamp = String(now());
     const recvWindow = String(config.recvWindow);
     const query = method === 'GET' ? buildQuery(payload) : '';
@@ -79,11 +81,13 @@ export function createBybitClient({ env = process.env, fetchImpl = fetch, now = 
       });
       let data;
       try { data = await response.json(); } catch {
-        if (!response.ok) throw upstreamError(null, response.status);
+        if (!response.ok) throw upstreamError(null, response.status, p2p);
         throw new BybitError('MALFORMED_UPSTREAM', 'استجابة Bybit غير صالحة.', 502);
       }
-      if (!response.ok || (typeof data?.retCode === 'number' && data.retCode !== 0)) throw upstreamError(data, response.status);
-      assert(data && data.retCode === 0 && data.result && typeof data.result === 'object' && !Array.isArray(data.result), 'MALFORMED_UPSTREAM', 'استجابة Bybit غير مكتملة.', 502);
+      const retCode = p2p && typeof data?.ret_code === 'number' ? data.ret_code : data?.retCode;
+      assert(!p2p || typeof data?.ret_code !== 'number' || typeof data?.retCode !== 'number' || data.ret_code === data.retCode, 'MALFORMED_UPSTREAM', 'استجابة Bybit غير مكتملة.', 502);
+      if (!response.ok || (typeof retCode === 'number' && retCode !== 0)) throw upstreamError(data, response.status, p2p);
+      assert(data && retCode === 0 && data.result && typeof data.result === 'object' && !Array.isArray(data.result), 'MALFORMED_UPSTREAM', 'استجابة Bybit غير مكتملة.', 502);
       return data;
     } catch (error) {
       if (error instanceof AppError) throw error;
