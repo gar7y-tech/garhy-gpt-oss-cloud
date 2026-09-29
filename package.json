@@ -8,6 +8,6 @@
   },
   "scripts": {
     "test": "node --test test/*.test.js gt-bybit-app/test/*.test.js",
-    "check": "node --check api/chat.js && node --check api/health.js && node --check api/bybit.js && node --check lib/validation.js && node --check lib/bybit.js && node --check lib/bybit-control.js && node --check app.js"
+    "check": "node --check api/chat.js && node --check api/health.js && node --check api/bybit.js && node --check lib/validation.js && node --check lib/bybit.js && node --check lib/bybit-control.js && node --check app.js && node --check hana-ai-pro/api/wird-amira.js && node --check hana-ai-pro/lib/wird-amira.js"
   }
 }
