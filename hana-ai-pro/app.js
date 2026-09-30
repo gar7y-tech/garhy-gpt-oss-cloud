@@ -97,8 +97,8 @@ form.addEventListener('submit', async (event) => {
       body: JSON.stringify({
         model: 'openai/gpt-oss-120b',
         reasoning: 'high',
+        mode,
         messages: [
-          { role: 'system', content: `Professional mode: ${mode}. Be precise, engineering-focused and structured.` },
           { role: 'user', content: text }
         ]
       })

@@ -51,5 +51,16 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 35
+    },
+    "api/wird-amira.js": {
+      "maxDuration": 35
+    },
+    "api/garhy-assistant.js": {
+      "maxDuration": 30
+    }
+  }
 }
