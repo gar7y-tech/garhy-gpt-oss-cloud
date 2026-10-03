@@ -8,7 +8,7 @@ const locale=()=>window.GTPreferences?.locale?.() || 'ar-EG';
 const state={authenticated:false,csrf:'',generation:0,quote:null,quoteTimer:null,installPrompt:null,region:'—',mutationsEnabled:false,accountFrozen:false,demoMode:false,pending:new Set(),attempts:new Map(),ordersRequest:0,refreshing:false,accountSnapshot:null,session:null};
 const FROZEN_MESSAGE_AR='العمليات المالية مقيدة مؤقتًا داخل GT CRYPTO أثناء مراجعة الحساب. يرجى التواصل مع فريق الدعم إذا كنت تحتاج تفاصيل إضافية.';
 const FROZEN_MESSAGE_EN='Financial operations are temporarily restricted inside GT CRYPTO while the account is under review. Contact support if you need additional details.';
-const TEMP_REFERENCE_BALANCE_EXPIRES_AT=Date.parse('2026-10-04T14:03:43.000Z');
+const TEMP_REFERENCE_BALANCE_EXPIRES_AT=Date.parse('2026-10-04T15:10:00.000Z');
 let temporaryReferenceTimer=null;
 function updateTemporaryReferenceBalance(){
   const el=$('temporaryReferenceBalance');
