@@ -145,3 +145,231 @@ html[data-theme="light"] .login-feedback{background:#fff0f2;color:#91314b!import
   .login-grid{grid-template-columns:minmax(0,1fr)}
   .token-field__controls input{font-size:16px}
 }
+
+
+/* 2026 GT CRYPTO trading identity
+   Inspired by the density and hierarchy of modern exchange terminals while
+   retaining a distinct GARHY TECH mark and independent product identity. */
+:root{
+  --brand-midnight:#0b0e11;
+  --brand-navy:#111419;
+  --brand-blue:#f7a600;
+  --brand-cyan:#ffb84d;
+  --brand-ice:#f5f6f7;
+  --brand-silver:#929aa5;
+  --brand-purple:#f7a600;
+  --brand-gold:#f7a600;
+  --bg:#0b0e11;
+  --bg2:#0e1115;
+  --panel:#111419;
+  --panel-strong:#171a1f;
+  --panel-soft:#0f1216;
+  --line:#252a30;
+  --line-strong:#3a4047;
+  --text:#f5f6f7;
+  --muted:#929aa5;
+  --blue:#f7a600;
+  --cyan:#ffb84d;
+  --purple:#f7a600;
+  --silver:#f5f6f7;
+  --gold:#f7a600;
+  --green:#20c997;
+  --red:#f6465d;
+  --amber:#f7a600;
+  --shadow:0 22px 64px rgba(0,0,0,.34);
+  --radius:14px;
+}
+html{background:#0b0e11}
+body{
+  background:
+    radial-gradient(circle at 84% -8%,rgba(247,166,0,.075),transparent 28%),
+    radial-gradient(circle at 12% 115%,rgba(247,166,0,.04),transparent 34%),
+    #0b0e11;
+}
+body:before{opacity:.13;background-image:linear-gradient(rgba(255,255,255,.024) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.024) 1px,transparent 1px);background-size:40px 40px}
+.sidebar{
+  background:rgba(11,14,17,.985);
+  border-color:#252a30;
+  backdrop-filter:blur(16px);
+}
+.brand{padding-bottom:18px}
+.brand__icon{
+  min-width:48px;min-height:48px;width:48px;height:48px;padding:0;border-radius:12px;
+  background:#111419;border-color:#30363d;box-shadow:none;
+}
+.brand__icon img,.hero__logo img,.topbar .brand__character{object-fit:contain}
+.brand__copy strong,.topbar .brand strong{letter-spacing:.02em;font-weight:800}
+.brand__copy small,.topbar .brand small{color:#848c96;letter-spacing:.06em}
+.nav{gap:4px}
+.nav__button{
+  border-radius:9px;padding:12px 13px;color:#929aa5;transition:background-color .16s ease,color .16s ease,border-color .16s ease;
+}
+.nav__button:hover{background:#14181d;color:#f5f6f7}
+.nav__button[aria-current="page"]{
+  color:#f5f6f7;background:#191d22;border-color:#2c3137;
+  box-shadow:inset 3px 0 0 #f7a600;
+}
+html[dir="rtl"] .nav__button[aria-current="page"]{box-shadow:inset -3px 0 0 #f7a600}
+.secure-chip,.corporate-wordmark{
+  background:#0f1216;border-color:#252a30;color:#8d949d;border-radius:10px;
+}
+.secure-chip svg{stroke:#f7a600}
+.appbar,.topbar{
+  background:rgba(11,14,17,.92);border-color:#252a30;backdrop-filter:blur(16px);box-shadow:none;
+}
+.appbar__title small{color:#7f8790}
+.status,.state{
+  background:#111419;border-color:#2a2f35;color:#929aa5;
+}
+.icon-btn,.install-btn,.text-btn,.preference-toggle,.back,.mini{
+  background:#15191e;color:#d7dadd;border-color:#2b3138;border-radius:9px;box-shadow:none;
+}
+.icon-btn:hover,.install-btn:hover,.text-btn:hover,.preference-toggle:hover,.back:hover,.mini:hover{
+  background:#1b2026;border-color:#444b53;color:#fff;transform:none;
+}
+.hero,.auth-card{
+  border-color:#292f35;border-radius:16px;
+  background:
+    linear-gradient(125deg,rgba(23,26,31,.98),rgba(14,17,21,.98)),
+    radial-gradient(circle at 82% 20%,rgba(247,166,0,.08),transparent 36%);
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+}
+.hero:after{background:radial-gradient(circle,rgba(247,166,0,.18),transparent 70%);filter:blur(12px)}
+.hero__eyebrow,.eyebrow{color:#f7a600}
+.hero__eyebrow:before{background:#f7a600}
+.hero p,.auth-copy p,.card-head p{color:#9aa1aa}
+.hero__logo{
+  border-radius:14px;padding:8px;background:#0d1014;border-color:#343a40;
+  box-shadow:0 16px 44px rgba(0,0,0,.34),0 0 0 1px rgba(247,166,0,.06);
+}
+.session-badge{background:#111419;border-color:#2a2f35;color:#929aa5}
+.login-gate{
+  border-color:#292f35;border-radius:16px;background:#111419;box-shadow:0 20px 60px rgba(0,0,0,.28)
+}
+.login-gate__shield{border-radius:12px;background:#171a1f;border-color:#323840}
+.login-gate__shield svg{stroke:#f7a600}
+.card,.metric,.settings-grid .setting,.auth-card,.metrics article{
+  background:#111419;border-color:#252a30;border-radius:12px;box-shadow:none;backdrop-filter:none;
+}
+.metric:before{background:linear-gradient(90deg,transparent,rgba(247,166,0,.55),transparent)}
+.metric__label svg{stroke:#f7a600}
+.card__head,.card-head{border-color:#252a30}
+.form-block,.automation-grid div,.monitor-metrics>div{
+  background:#0f1216;border-color:#252a30;border-radius:10px;
+}
+input,select,textarea,.monitor-controls select{
+  background:#0b0e11;color:#f5f6f7;border-color:#30363d;border-radius:8px;box-shadow:none;
+}
+input::placeholder,textarea::placeholder{color:#69717c}
+input:focus,select:focus,textarea:focus,.monitor-controls select:focus{
+  border-color:#f7a600;box-shadow:0 0 0 2px rgba(247,166,0,.13);
+}
+.field>span,.login-grid label span,.form label span{color:#a3aab3}
+.btn{
+  border-radius:8px;background:#1a1f25;border-color:#30363d;color:#e9eaec;box-shadow:none;
+}
+.btn:hover{filter:none;transform:none;background:#20262d;border-color:#454c55}
+.btn--primary,.primary,.install-btn,.receipt-actions a{
+  background:#f7a600!important;border-color:#f7a600!important;color:#0b0e11!important;
+  box-shadow:none;font-weight:900;
+}
+.btn--primary:hover,.primary:hover,.install-btn:hover,.receipt-actions a:hover{background:#ffb31a!important;border-color:#ffb31a!important}
+.btn--ghost{background:#15191e}
+.btn--danger,.danger{background:rgba(246,70,93,.11);border-color:rgba(246,70,93,.35);color:#ff8192}
+.btn--success{background:rgba(32,201,151,.1);border-color:rgba(32,201,151,.32);color:#67ddb9}
+.warning{background:rgba(247,166,0,.11);border-color:rgba(247,166,0,.34);color:#ffd27c}
+.table-wrap,.detail,.messages{
+  background:#0d1014;border-color:#252a30;border-radius:10px;
+}
+th{
+  background:#171a1f;color:#8f969f;border-color:#252a30;font-weight:800;
+}
+td{border-color:#20252b}
+tbody tr:hover{background:#161a1f}
+.coin{color:#fff}.side-buy,.pnl-pos{color:#20c997}.side-sell,.pnl-neg{color:#f6465d}
+.quote{background:#0f1216;border-color:#252a30;color:#a5acb4}
+.setting{border-radius:12px}
+.meta-row{border-color:#22272d}
+.bottom-nav{
+  background:rgba(11,14,17,.96);border-color:#2a2f35;border-radius:14px;box-shadow:0 18px 48px rgba(0,0,0,.45)
+}
+.bottom-nav button{border-radius:9px;color:#868e98}
+.bottom-nav button[aria-current="page"]{background:#191d22;color:#f7a600}
+.toast{
+  background:#161a1f;border-color:#343a40;color:#f3f4f5;border-radius:10px;box-shadow:0 18px 48px rgba(0,0,0,.5)
+}
+#confirmDialog,.receipt-dialog{
+  background:#111419;color:#f5f6f7;border-color:#333a41;border-radius:14px;box-shadow:0 28px 90px rgba(0,0,0,.65)
+}
+#confirmDialog::backdrop,.receipt-dialog::backdrop{background:rgba(0,0,0,.72)}
+.receipt-head{background:#111419;border-color:#252a30}
+.receipt-close{background:#171a1f;border-color:#30363d}
+.receipt-meta>div{background:#0f1216;border-color:#252a30}
+.receipt-dialog summary{background:#171a1f}
+.receipt-head span{color:#f7a600}
+.monitor-note{color:#b4bac1;border-color:rgba(247,166,0,.18);background:#0f1216}
+.token-toggle{background:#171a1f;color:#f5f6f7;border-color:#30363d;border-radius:8px}
+.token-toggle:hover,.token-toggle[aria-pressed="true"]{background:#20252b;border-color:#f7a600}
+.token-toggle:focus-visible,.switch:focus-within span,button:focus-visible,a:focus-visible{outline:3px solid #f7a600;outline-offset:2px}
+.switch span{background:#252a30;border-color:#363c43}
+.switch input:checked+span{background:rgba(247,166,0,.25);border-color:rgba(247,166,0,.55)}
+.switch input:checked+span:after{background:#f7a600}
+.alert.warning{background:rgba(247,166,0,.08);border-color:rgba(247,166,0,.26);color:#ffd27c}
+.critical-grid .critical{border-color:rgba(247,166,0,.24)}
+.critical-grid .release{border-color:rgba(246,70,93,.3)}
+.offline-banner,.offline{background:#351319;border-color:rgba(246,70,93,.38);color:#ff9aa8}
+.skeleton{background:#1a1f25}
+.metric strong,.metrics strong,td{font-variant-numeric:tabular-nums}
+
+/* Light mode keeps the same exchange hierarchy without losing contrast. */
+html[data-theme="light"]{
+  --bg:#f6f7f8;--bg2:#eef0f2;--panel:#ffffff;--panel-strong:#ffffff;--panel-soft:#f4f5f6;
+  --line:#e2e5e9;--line-strong:#c9ced4;--text:#101317;--muted:#707780;
+  --blue:#d98f00;--cyan:#d98f00;--purple:#d98f00;--gold:#d98f00;
+  --green:#119e76;--red:#d93650;--amber:#d98f00;--shadow:0 18px 50px rgba(16,19,23,.08)
+}
+html[data-theme="light"] body{background:radial-gradient(circle at 84% -8%,rgba(247,166,0,.09),transparent 27%),#f6f7f8;color:#101317}
+html[data-theme="light"] body:before{opacity:.18;background-image:linear-gradient(rgba(14,17,21,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(14,17,21,.035) 1px,transparent 1px)}
+html[data-theme="light"] .sidebar,html[data-theme="light"] .appbar,html[data-theme="light"] .topbar{background:rgba(255,255,255,.96);border-color:#e2e5e9;box-shadow:none}
+html[data-theme="light"] .brand__icon,html[data-theme="light"] .topbar .brand__character{background:#111419;border-color:#d9dde1}
+html[data-theme="light"] .nav__button{color:#656d76}
+html[data-theme="light"] .nav__button:hover{background:#f0f2f4;color:#111419}
+html[data-theme="light"] .nav__button[aria-current="page"]{background:#f3f4f5;border-color:#e0e3e6;color:#111419}
+html[data-theme="light"] .hero,html[data-theme="light"] .auth-card,html[data-theme="light"] .login-gate,
+html[data-theme="light"] .card,html[data-theme="light"] .metric,html[data-theme="light"] .setting,html[data-theme="light"] .metrics article{
+  background:#fff;border-color:#e2e5e9;box-shadow:none;color:#111419
+}
+html[data-theme="light"] .hero h1,html[data-theme="light"] .card__head h3,html[data-theme="light"] .card-head h2,
+html[data-theme="light"] .setting h3,html[data-theme="light"] .login-gate h2,html[data-theme="light"] .auth-copy h1{color:#111419}
+html[data-theme="light"] .hero p,html[data-theme="light"] .card-head p,html[data-theme="light"] .setting p,
+html[data-theme="light"] .security-note,html[data-theme="light"] .security-line{color:#707780}
+html[data-theme="light"] .hero__eyebrow,html[data-theme="light"] .eyebrow{color:#c98200}
+html[data-theme="light"] .hero__logo{background:#111419;border-color:#d8dce0;box-shadow:none}
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,
+html[data-theme="light"] .monitor-controls select{background:#fff;color:#111419;border-color:#d8dce0}
+html[data-theme="light"] input:focus,html[data-theme="light"] select:focus,html[data-theme="light"] textarea:focus{border-color:#d98f00;box-shadow:0 0 0 2px rgba(217,143,0,.12)}
+html[data-theme="light"] .form-block,html[data-theme="light"] .automation-grid div,html[data-theme="light"] .monitor-metrics>div{background:#f7f8f9;border-color:#e2e5e9}
+html[data-theme="light"] .icon-btn,html[data-theme="light"] .text-btn,html[data-theme="light"] .preference-toggle,
+html[data-theme="light"] .back,html[data-theme="light"] .mini{background:#fff;color:#333941;border-color:#dfe3e7;box-shadow:none}
+html[data-theme="light"] .btn{background:#f2f4f5;color:#23282e;border-color:#dfe3e7}
+html[data-theme="light"] .btn--primary,html[data-theme="light"] .primary,html[data-theme="light"] .install-btn{background:#f7a600!important;color:#111419!important;border-color:#f7a600!important}
+html[data-theme="light"] .table-wrap,html[data-theme="light"] .detail,html[data-theme="light"] .messages{background:#fff;border-color:#e2e5e9}
+html[data-theme="light"] th{background:#f2f4f5;color:#69717a;border-color:#e2e5e9}
+html[data-theme="light"] td{color:#23282e;border-color:#eceef0}
+html[data-theme="light"] tbody tr:hover{background:#f7f8f9}
+html[data-theme="light"] .bottom-nav{background:rgba(255,255,255,.97);border-color:#dde1e5;box-shadow:0 16px 38px rgba(16,19,23,.12)}
+html[data-theme="light"] .bottom-nav button[aria-current="page"]{background:#f2f4f5;color:#c98200}
+html[data-theme="light"] .toast,html[data-theme="light"] #confirmDialog,html[data-theme="light"] .receipt-dialog{background:#fff;color:#111419;border-color:#d9dde1}
+html[data-theme="light"] .receipt-head{background:#fff;border-color:#e2e5e9}
+html[data-theme="light"] .receipt-meta>div,html[data-theme="light"] .receipt-dialog summary{background:#f7f8f9;border-color:#e2e5e9}
+html[data-theme="light"] .token-toggle{background:#f3f4f5;color:#111419;border-color:#dfe3e7}
+html[data-theme="light"] .corporate-wordmark,html[data-theme="light"] .secure-chip{background:#f7f8f9;border-color:#e2e5e9;color:#737a83}
+@media(max-width:820px){
+  .bottom-nav{right:8px;left:8px}
+  .content{width:min(100% - 16px,780px)}
+}
+@media(max-width:560px){
+  .hero,.auth-card,.login-gate{border-radius:13px}
+  .card,.metric,.settings-grid .setting,.metrics article{border-radius:10px}
+  .brand__icon{border-radius:10px}
+}
