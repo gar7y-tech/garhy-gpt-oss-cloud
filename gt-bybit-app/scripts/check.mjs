@@ -15,7 +15,7 @@ const manifest=JSON.parse(await readFile(new URL('gt-bybit/manifest.webmanifest'
 const html=await readFile(new URL('gt-bybit/index.html',root),'utf8');
 const p2pHtml=await readFile(new URL('gt-bybit/p2p.html',root),'utf8');
 const worker=await readFile(new URL('gt-bybit/sw.js',root),'utf8');
-const allowedImages=['assets/gt-crypto/bybit-icon.svg'];
+const allowedImages=['assets/gt-crypto/gt-crypto-mark.svg'];
 
 assert.match(html,/<html lang="ar" dir="rtl">/);
 assert.match(html,/id="secureApp"[^>]*hidden/);
@@ -29,7 +29,7 @@ for(const page of [html,p2pHtml]) {
   }
 }
 
-assert.ok(Array.isArray(manifest.icons) && manifest.icons.some((icon)=>icon.src==='/assets/gt-crypto/bybit-icon.svg' && icon.type==='image/svg+xml'),'Manifest must use the approved Bybit application icon');
+assert.ok(Array.isArray(manifest.icons) && manifest.icons.some((icon)=>icon.src==='/assets/gt-crypto/bybit-icon.svg' && icon.type==='image/svg+xml'),'Manifest must use the approved GT CRYPTO application mark');
 
 assert.equal(manifest.start_url,'/');
 assert.equal(manifest.scope,'/');
@@ -73,6 +73,6 @@ async function scan(url,prefix='') {
   }
 }
 await scan(root);
-assert.deepEqual(imageFiles.sort(),allowedImages.sort(),'Only the approved Bybit application icon may be tracked');
+assert.deepEqual(imageFiles.sort(),allowedImages.sort(),'Only the approved GT CRYPTO application mark may be tracked');
 
-console.log('Syntax, HTML/CSP, local assets, Bybit PWA icon, receipt shell, and image inventory passed.');
+console.log('Syntax, HTML/CSP, local assets, GT CRYPTO PWA mark, receipt shell, and image inventory passed.');
