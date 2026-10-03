@@ -15,7 +15,7 @@ const manifest=JSON.parse(await readFile(new URL('gt-bybit/manifest.webmanifest'
 const html=await readFile(new URL('gt-bybit/index.html',root),'utf8');
 const p2pHtml=await readFile(new URL('gt-bybit/p2p.html',root),'utf8');
 const worker=await readFile(new URL('gt-bybit/sw.js',root),'utf8');
-const allowedImages=['assets/gt-crypto/character.png','assets/gt-crypto/scene-watermark.png','assets/gt-crypto/bybit-icon.svg'];
+const allowedImages=['assets/gt-crypto/bybit-icon.svg'];
 
 assert.match(html,/<html lang="ar" dir="rtl">/);
 assert.match(html,/id="secureApp"[^>]*hidden/);
@@ -67,12 +67,12 @@ async function scan(url,prefix='') {
     }
     assert.doesNotMatch(source,/(?:createElement\(['"]img['"]\)|new Image\s*\(|createObjectURL\([^)]*image|<canvas\b|\.getContext\(['"]2d)/i,`Image generator: ${relative}`);
     if(entry.name.endsWith('.css')){
-      for(const match of source.matchAll(/url\s*\(\s*['"]?([^)'"\s]+)['"]?\s*\)/gi))assert.equal(match[1],`/${allowedImages[1]}`,`Unexpected CSS image in ${relative}`);
+      assert.doesNotMatch(source,/url\s*\(\s*['"]?[^)'"\s]+\.(?:png|jpe?g|webp|gif|avif|bmp|ico|svg|tiff?)(?:\?[^)'"\s]*)?['"]?\s*\)/i,`Unexpected CSS image in ${relative}`);
       assert.doesNotMatch(source,/image-set\s*\(|border-image\s*:|content\s*:\s*url\s*\(/i,`Unexpected CSS image mechanism: ${relative}`);
     }
   }
 }
 await scan(root);
-assert.deepEqual(imageFiles.sort(),allowedImages.sort(),'Only the approved character, watermark, and Bybit application icon may be tracked');
+assert.deepEqual(imageFiles.sort(),allowedImages.sort(),'Only the approved Bybit application icon may be tracked');
 
-console.log('Syntax, HTML/CSP, local assets, PWA icon, receipt shell, and approved image inventory passed.');
+console.log('Syntax, HTML/CSP, local assets, Bybit PWA icon, receipt shell, and image inventory passed.');
