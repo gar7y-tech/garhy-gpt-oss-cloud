@@ -30,5 +30,5 @@ test('service worker caches preference and demo runtime dependencies',()=>{
 test('service worker caches P2P shell, receipts, and the approved GT CRYPTO mark',()=>{
   assert.match(source,/p2p-console\.js/);
   assert.match(source,/receipts\.js/);
-  assert.match(source,/\/assets\\/gt-crypto\\/gt-crypto-mark\\.svg/);
+  assert.match(source,/\/assets\/gt-crypto\/gt-crypto-mark\.svg/);
 });
