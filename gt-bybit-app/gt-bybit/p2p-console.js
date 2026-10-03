@@ -264,7 +264,7 @@ async function checkStatus() {
     return result;
   } catch (error) {
     $('mApi').textContent = 'مغلق';
-    $('mApiSub').textContent = Number.isInteger(error.data?.retCode) ? `Bybit retCode ${error.data.retCode}` : 'لم يتم التحقق من الصلاحيات';
+    $('mApiSub').textContent = Number.isInteger(error.data?.retCode) ? `Provider retCode ${error.data.retCode}` : 'لم يتم التحقق من الصلاحيات';
     $('capabilityText').textContent = error.data?.error==='PERMISSION_DENIED' ? 'تسجيل الدخول يعمل، لكن المفتاح أو حساب المعلن لا يملك صلاحيات P2P Open API المطلوبة.' : `تعذر التحقق من P2P Open API: ${error.message}`;
     $('permissionAlert').classList.remove('hidden');
     setState('error', 'P2P غير متاح');
@@ -308,8 +308,8 @@ async function refreshAll(showToast = false) {
   } catch (error) {
     $('mPending').textContent = '—';
     $('mAds').textContent = '—';
-    $('pendingTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحيات P2P من Bybit.</div>';
-    $('adsTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحية Advertising من Bybit.</div>';
+    $('pendingTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحيات P2P.</div>';
+    $('adsTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحية Advertising.</div>';
     if (showToast) toast(error.message, 'error');
   }
 }
@@ -434,7 +434,7 @@ $('applyTargetBtn').addEventListener('click',async()=>{
       payload:{itemId:data.ad.itemId,price:target},
       confirm:'UPDATE_P2P_AD',
     });
-    toast('تم إرسال تحديث السعر إلى Bybit وتم إنشاء إيصال PDF.','success');
+    toast('تم إرسال تحديث السعر إلى الخدمة وتم إنشاء إيصال PDF.','success');
     await refreshAds(false);
     await refreshPriceMonitor(false);
   }catch(error){
@@ -483,7 +483,7 @@ $('messageForm').addEventListener('submit', async (event) => {
     event.currentTarget.elements.message.value = '';
     const messages = await request({ action: 'messages', orderId: body.orderId, size: 30, lastId: 0 });
     renderMessages(messages);
-    toast('تم إرسال الرسالة عبر Bybit P2P.', 'success');
+    toast('تم إرسال الرسالة عبر خدمة P2P.', 'success');
   } catch (error) {
     toast(error.message, 'error');
   }
@@ -497,7 +497,7 @@ $('paidForm').addEventListener('submit', async (event) => {
   if (!confirm(`تأكيد Mark as Paid للطلب ${body.orderId}؟\nنفّذ فقط إذا كنت قد أرسلت الدفع بالفعل.`)) return;
   try {
     await financialRequest({ action: 'mark-paid', orderId: body.orderId, paymentType: body.paymentType, confirm: 'P2P_PAID' });
-    toast('تم إرسال Mark as Paid إلى Bybit وتم إنشاء إيصال PDF.', 'success');
+    toast('تم إرسال Mark as Paid إلى الخدمة وتم إنشاء إيصال PDF.', 'success');
     event.currentTarget.elements.confirm.value = '';
     await refreshAll(false);
   } catch (error) {
@@ -510,10 +510,10 @@ $('releaseForm').addEventListener('submit', async (event) => {
   if(accountFrozen)return showFrozenNotice();
   const body = formObject(event.currentTarget);
   if (body.confirm !== 'RELEASE_P2P') return toast('اكتب RELEASE_P2P حرفيًا للتأكيد.', 'error');
-  if (!confirm(`تحذير: سيتم Release للأصول في الطلب ${body.orderId}.\n\nلا تؤكد إلا بعد التحقق الفعلي من وصول الأموال خارج Bybit عند الحاجة.`)) return;
+  if (!confirm(`تحذير: سيتم Release للأصول في الطلب ${body.orderId}.\n\nلا تؤكد إلا بعد التحقق الفعلي من وصول الأموال خارج المنصة عند الحاجة.`)) return;
   try {
     await financialRequest({ action: 'release', orderId: body.orderId, confirm: 'RELEASE_P2P' });
-    toast('تم إرسال Release Assets إلى Bybit وتم إنشاء إيصال PDF.', 'success');
+    toast('تم إرسال Release Assets إلى الخدمة وتم إنشاء إيصال PDF.', 'success');
     event.currentTarget.elements.confirm.value = '';
     await refreshAll(false);
   } catch (error) {
