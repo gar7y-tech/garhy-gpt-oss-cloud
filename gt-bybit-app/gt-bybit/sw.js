@@ -1,11 +1,12 @@
-const CACHE='gt-bybit-shell-20261003-trading-identity1';
-const VERSION='20261003-bybit-inspired1';
+const CACHE='gt-bybit-shell-20261003-premium2';
+const VERSION='20261003-premium2';
 const STATIC=[
   '/gt-bybit/index.html',
   '/gt-bybit/p2p.html',
   `/gt-bybit/app.css?v=${VERSION}`,
   `/gt-bybit/p2p-console.css?v=${VERSION}`,
   `/gt-bybit/brand.css?v=${VERSION}`,
+  `/gt-bybit/premium.css?v=${VERSION}`,
   `/gt-bybit/preferences-bootstrap.js?v=${VERSION}`,
   `/gt-bybit/preferences.js?v=${VERSION}`,
   `/gt-bybit/receipts.js?v=${VERSION}`,

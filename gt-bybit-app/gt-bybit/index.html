@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#0B0E11" />
   <meta name="color-scheme" content="dark light" />
-  <script src="/gt-bybit/preferences-bootstrap.js?v=20261003-bybit-inspired1"></script>
+  <script src="/gt-bybit/preferences-bootstrap.js?v=20261003-premium2"></script>
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="referrer" content="no-referrer" />
   <meta name="application-name" content="GT CRYPTO APIs" />
@@ -15,8 +15,9 @@
   <title>GT CRYPTO APIs</title>
   <link rel="icon" type="image/svg+xml" href="/assets/gt-crypto/gt-crypto-mark.svg" />
   <link rel="manifest" href="/gt-bybit/manifest.webmanifest" />
-  <link rel="stylesheet" href="/gt-bybit/app.css?v=20261003-bybit-inspired1" />
-  <link rel="stylesheet" href="/gt-bybit/brand.css?v=20261003-bybit-inspired1" />
+  <link rel="stylesheet" href="/gt-bybit/app.css?v=20261003-premium2" />
+  <link rel="stylesheet" href="/gt-bybit/brand.css?v=20261003-premium2" />
+  <link rel="stylesheet" href="/gt-bybit/premium.css?v=20261003-premium2" />
 </head>
 <body data-locked="true">
   <a class="skip-link" href="#mainContent">تخطَّ إلى المحتوى الرئيسي</a>
@@ -36,7 +37,7 @@
           <span>الرئيسية</span>
         </button>
         <button class="nav__button" type="button" data-view="trade">
-          <svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3M2 18h20"/></svg>
+          <svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 3v4m0 6v8M3 7h6v6H3zM17 3v9m0 6v3m-3-9h6v6h-6z"/></svg>
           <span>التداول</span>
         </button>
         <button class="nav__button" type="button" data-view="risk">
@@ -44,7 +45,7 @@
           <span>المخاطر</span>
         </button>
         <button class="nav__button" type="button" data-view="assets">
-          <svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v12H4z"/><path d="M7 7V5h10v2m-2 6h5"/></svg>
+          <svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M4 7V4h13v3m0 6h3m-5 0h.01"/></svg>
           <span>الأصول</span>
         </button>
         <button class="nav__button" type="button" data-view="settings">
@@ -126,8 +127,8 @@
 
             <div class="section-head"><div><h2>الحساب الموحد</h2><p>Unified Trading Account · USD equivalent</p></div><div class="section-actions"><button id="overviewRefresh" class="text-btn" type="button">تحديث الآن</button></div></div>
             <div class="metrics">
-              <article class="metric"><div class="metric__label"><span>إجمالي قيمة الحساب</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3"/></svg></div><strong id="mEquity">—</strong><small>إجمالي قيمة الحساب</small></article>
-              <article class="metric"><div class="metric__label"><span>رصيد المحفظة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v12H4z"/><path d="M7 7V5h10v2"/></svg></div><strong id="mWallet">—</strong><small>رصيد المحفظة</small></article>
+              <article class="metric"><div class="metric__label"><span>إجمالي قيمة الحساب</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3"/></svg></div><strong id="mEquity">—</strong><small>إجمالي قيمة الحساب</small><small id="equityModeBadge" class="hidden" hidden>عرض تجريبي — غير متصل بالرصيد الحي</small></article>
+              <article class="metric"><div class="metric__label"><span>رصيد المحفظة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M7 7V5h10v2"/></svg></div><strong id="mWallet">—</strong><small>رصيد المحفظة</small></article>
               <article class="metric"><div class="metric__label"><span>المراكز المحملة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 17 9 12l3 3 8-8"/></svg></div><strong id="mPositions">—</strong><small>المراكز النشطة</small></article>
               <article class="metric"><div class="metric__label"><span>الأوامر المحملة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8m-8 4h5"/></svg></div><strong id="mOrders">—</strong><small>الأوامر المفتوحة</small></article>
             </div>
@@ -211,9 +212,9 @@
 
   <nav class="bottom-nav" hidden aria-label="التنقل السفلي">
     <button type="button" data-view="overview" aria-current="page"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm10 7h6v-9h-6v9ZM4 20h6v-3H4v3Zm10-13h6V4h-6v3Z"/></svg><span>الرئيسية</span></button>
-    <button type="button" data-view="trade"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3M2 18h20"/></svg><span>تداول</span></button>
+    <button type="button" data-view="trade"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M6 3v4m0 6v8M3 7h6v6H3zM17 3v9m0 6v3m-3-9h6v6h-6z"/></svg><span>تداول</span></button>
     <button type="button" data-view="risk"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 3 8.5 7 10 4-1.5 7-5.6 7-10V6l-7-3Z"/></svg><span>مخاطر</span></button>
-    <button type="button" data-view="assets"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v12H4z"/><path d="M7 7V5h10v2"/></svg><span>أصول</span></button>
+    <button type="button" data-view="assets"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M7 7V5h10v2"/></svg><span>أصول</span></button>
     <button type="button" data-view="settings"><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg><span>إعدادات</span></button>
   </nav>
 
@@ -226,8 +227,8 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/gt-bybit/preferences.js?v=20261003-bybit-inspired1"></script>
-  <script src="/gt-bybit/receipts.js?v=20261003-bybit-inspired1"></script>
-  <script src="/gt-bybit/app.js?v=20261003-bybit-inspired1" type="module"></script>
+  <script src="/gt-bybit/preferences.js?v=20261003-premium2"></script>
+  <script src="/gt-bybit/receipts.js?v=20261003-premium2"></script>
+  <script src="/gt-bybit/app.js?v=20261003-premium2" type="module"></script>
 </body>
 </html>
