@@ -175,7 +175,7 @@ async function connect() {
   state.pending.add('connect');$('connectBtn').disabled=true;$('connectBtn').textContent='جارٍ التحقق…';
   try { const body={controlToken:input.value.trim()};input.value='';const session=await api('login',{body,allowLocked:true});body.controlToken='';await applySession(session);sessionChannel?.postMessage('changed');toast('تم فتح جلسة التحكم.','success');await notify('تنبيه أمان GT CRYPTO APIs','تم فتح جلسة تحكم جديدة.','gt-bybit-login'); }
   catch(error) {loginFeedback(error.message);input.focus();}
-  finally {input.value='';state.pending.delete('connect');$('connectBtn').disabled=false;$('connectBtn').textContent='فتح الجلسة';}
+  finally {input.value='';state.pending.delete('connect');$('connectBtn').disabled=false;$('connectBtn').textContent='فتح الجلسة';updateConnectivity();}
 }
 async function logout() {
   if(state.pending.size)return toast('انتظر انتهاء الطلب الجاري قبل تسجيل الخروج.');
@@ -200,7 +200,7 @@ function confirmAction(data) {
     row.append(term,detail);$('confirmationSummary').append(row);
   }
   $('confirmationTyped').value='';$('typedConfirmField').hidden=data.action!=='cancel-all';
-  dialog.showModal();$('confirmCancel').focus();
+  dialog.returnValue='cancel';dialog.showModal();$('confirmCancel').focus();
   return new Promise((resolve)=>{dialog.addEventListener('close',()=>resolve(dialog.returnValue==='confirm'),{once:true});});
 }
 $('confirmAccept').addEventListener('click',()=>{
@@ -320,7 +320,7 @@ async function refreshDashboard(showToast=true) {
   } finally {state.refreshing=false;updateConnectivity();}
 }
 $('connectBtn').addEventListener('click',connect);
-$('controlToken').addEventListener('keydown',(e)=>{if(e.key==='Enter')connect();});
+$('controlToken').addEventListener('keydown',(e)=>{if(e.key==='Enter' && !$('connectBtn').disabled)connect();});
 $('disconnectBtn').addEventListener('click',logout);$('lockSettingsBtn').addEventListener('click',logout);
 $('refreshBtn').addEventListener('click',()=>refreshDashboard());$('overviewRefresh').addEventListener('click',()=>refreshDashboard());
 $('reloadOrdersBtn').addEventListener('click',()=>loadOrders().catch((e)=>toast(e.message,'error')));
@@ -393,6 +393,7 @@ async function registerServiceWorker(){
   }catch{$('pwaState').textContent='تعذر تهيئة العمل دون اتصال';}
 }
 async function boot(){
+  $('connectBtn').disabled=true;$('connectBtn').textContent='جارٍ تهيئة الاتصال…';
   setUnlocked(false);navigate(new URL(location.href).searchParams.get('view'));updateOrderFields();updateNotificationState();
   const results=await Promise.allSettled([api('health',{allowLocked:true}),api('session',{allowLocked:true}),registerServiceWorker(),monitorNotificationPermission()]);
   const health=results[0].status==='fulfilled'?results[0].value:null;
@@ -400,5 +401,6 @@ async function boot(){
   else{$('preAuthState').textContent=navigator.onLine?'تعذر الوصول إلى الخدمة':'غير متصل بالإنترنت';setStatus('error','غير متاح');}
   if(results[1].status==='fulfilled' && results[1].value.authenticated)await applySession(results[1].value);
   updateConnectivity();
+  $('connectBtn').disabled=false;$('connectBtn').textContent='فتح الجلسة';
 }
-boot().catch(()=>toast('تعذر تهيئة التطبيق. أعد تحميل الصفحة.','error'));
+boot().catch(()=>{$('connectBtn').disabled=false;$('connectBtn').textContent='فتح الجلسة';toast('تعذر تهيئة التطبيق. أعد تحميل الصفحة.','error');});

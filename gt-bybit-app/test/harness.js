@@ -54,7 +54,7 @@ document.querySelector('#run').onclick=async()=>{
     check(doc().querySelector('#controlToken').value==='','Control input is cleared');
     check(!doc().cookie.includes('__Host-gt_bybit_sid'),'Session cookie cannot be read by JavaScript');
     const sw=await iframe.contentWindow.navigator.serviceWorker.ready;check(new URL(sw.scope).pathname==='/','Service worker has root scope');
-    const cacheNames=await iframe.contentWindow.caches.keys();check(cacheNames.includes('gt-bybit-shell-20260924-live1'),'Versioned PWA shell installed');
+    const cacheNames=await iframe.contentWindow.caches.keys();check(cacheNames.includes('gt-bybit-shell-20261003-premium2'),'Versioned PWA shell installed');
     let apiCached=false;for(const name of cacheNames)for(const request of await (await iframe.contentWindow.caches.open(name)).keys())if(new URL(request.url).pathname.startsWith('/api/'))apiCached=true;
     check(!apiCached,'No API responses in CacheStorage');
     el('lockSettingsBtn').click();await waitFor(()=>el('secureApp').hidden,'Logout failed');check(el('walletTable').textContent==='افتح الجلسة لعرض البيانات.','Logout removes account data');

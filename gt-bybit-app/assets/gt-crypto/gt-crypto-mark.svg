@@ -1,8 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="GT CRYPTO">
   <title>GT CRYPTO</title>
-  <rect width="1024" height="1024" rx="220" fill="#0B0E11"/>
-  <rect x="56" y="56" width="912" height="912" rx="178" fill="none" stroke="#252A30" stroke-width="24"/>
-  <path d="M474 302H342c-70 0-118 48-118 118v184c0 70 48 118 118 118h146V548H366" fill="none" stroke="#F5F6F7" stroke-width="74" stroke-linecap="square" stroke-linejoin="miter"/>
-  <path d="M566 302h250M691 302v420" fill="none" stroke="#F5F6F7" stroke-width="74" stroke-linecap="square"/>
-  <path d="M826 302v420" fill="none" stroke="#F7A600" stroke-width="46" stroke-linecap="square"/>
+  <defs>
+    <linearGradient id="surface" x2="1" y2="1"><stop stop-color="#262D38"/><stop offset=".55" stop-color="#11151B"/><stop offset="1" stop-color="#0B0E11"/></linearGradient>
+    <linearGradient id="gold" x2=".2" y2="1"><stop stop-color="#FFE3A0"/><stop offset=".45" stop-color="#FFC247"/><stop offset="1" stop-color="#F7A600"/></linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="220" fill="url(#surface)"/>
+  <rect x="34" y="34" width="956" height="956" rx="190" fill="none" stroke="#3B424D" stroke-width="8"/>
+  <!-- Angular G and inset T: an original monogram with a generous safe area. -->
+  <path d="M526 270H330L222 378v274l108 108h224V484H392v84h76v108H366l-60-60V414l60-60h160Z" fill="#080A0D" transform="translate(0 12)"/>
+  <path d="M526 258H330L222 366v274l108 108h224V472H392v84h76v108H366l-60-60V402l60-60h160Z" fill="url(#gold)"/>
+  <path d="M580 258h222v84h-69v406h-84V342h-69Z" fill="#080A0D" transform="translate(0 12)"/>
+  <path d="M580 258h222v84h-69v406h-84V342h-69Z" fill="#F5F6F7"/>
 </svg>

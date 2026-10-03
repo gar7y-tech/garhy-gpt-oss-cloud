@@ -8,11 +8,11 @@ import {fixtureEnv,memoryStore,mockRequest} from '../test/helpers.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const port=Number(process.env.GT_QA_PORT || 4173);
 const origin=`http://localhost:${port}`;
-const env=fixtureEnv();env.BYBIT_ALLOWED_ORIGINS=origin;env.GT_APP_MODE='ui-testing';
+const env=fixtureEnv();env.BYBIT_ALLOWED_ORIGINS=origin;env.GT_APP_MODE=process.env.GT_QA_GUARDED==='1'?'production':'ui-testing';
 const calls=[];
 const handler=createHandler({env,store:memoryStore(),request:mockRequest(calls),storageReady:()=>true});
 const config=JSON.parse(await readFile(path.join(root,'vercel.json'),'utf8'));
-const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.webmanifest':'application/manifest+json','.png':'image/png'};
+const mime={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.webmanifest':'application/manifest+json','.png':'image/png','.svg':'image/svg+xml'};
 const server=http.createServer(async(req,res)=>{
   res.status=(status)=>{res.statusCode=status;return res;};res.json=(body)=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(body));};
   const url=new URL(req.url,origin);
