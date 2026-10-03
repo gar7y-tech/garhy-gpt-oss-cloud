@@ -5,8 +5,8 @@
     <application
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:icon="@drawable/gt_icon"
-        android:roundIcon="@drawable/gt_icon"
+        android:icon="@drawable/bybit_icon"
+        android:roundIcon="@drawable/bybit_icon"
         android:label="GT CRYPTO APIs"
         android:supportsRtl="true"
         android:theme="@style/Theme.GTBYBIT"
