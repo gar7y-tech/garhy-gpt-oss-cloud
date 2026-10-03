@@ -30,5 +30,13 @@
       "short_name": "Assets",
       "url": "/gt-bybit/?view=assets"
     }
+  ],
+  "icons": [
+    {
+      "src": "/assets/gt-crypto/bybit-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
   ]
 }
