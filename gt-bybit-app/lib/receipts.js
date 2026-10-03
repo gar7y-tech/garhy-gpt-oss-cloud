@@ -74,7 +74,7 @@ function pdfFor(receipt) {
     'REQUEST DETAILS',
   ];
   flatten(receipt.request,'request',source);
-  source.push('','BYBIT RESPONSE');
+  source.push('','SOURCE RESPONSE');
   flatten(receipt.result,'result',source);
   const lines=source.flatMap((line)=>wrap(line,88));
   const pages=[];
@@ -93,7 +93,7 @@ function pdfFor(receipt) {
     objects[contentIds[index]]=`<< /Length ${Buffer.byteLength(stream,'latin1')} >>\nstream\n${stream}\nendstream`;
   });
 
-  let pdf='%PDF-1.4\n%GTBYBIT\n';
+  let pdf='%PDF-1.4\n%GTCRYPTO\n';
   const offsets=[0];
   for(let id=1;id<objects.length;id++){
     offsets[id]=Buffer.byteLength(pdf,'latin1');
@@ -109,7 +109,7 @@ export function createReceipt({channel,action,requestId=null,request={},result={
   const safeRequest=sanitizeReceiptValue(request);
   const safeResult=sanitizeReceiptValue(result);
   const timestamp=new Date(now).toISOString();
-  const core={channel:String(channel),action:String(action),status:'ACCEPTED_BY_BYBIT',timestamp,requestId:requestId ? String(requestId) : null,request:safeRequest,result:safeResult};
+  const core={channel:String(channel),action:String(action),status:'ACCEPTED',timestamp,requestId:requestId ? String(requestId) : null,request:safeRequest,result:safeResult};
   const integrity=crypto.createHash('sha256').update(JSON.stringify(core)).digest('hex');
   const receiptId=`GTB-${now.toString(36).toUpperCase()}-${integrity.slice(0,10).toUpperCase()}`;
   const receipt={receiptId,...core,integrity};
