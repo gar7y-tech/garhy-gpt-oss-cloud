@@ -19,15 +19,6 @@ body{
     radial-gradient(circle at 100% 30%,rgba(20,223,244,.10),transparent 30%),
     linear-gradient(160deg,#020814 0%,#06152a 52%,#030b18 100%);
 }
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  background:url("/assets/gt-crypto/scene-watermark.png") center / min(76vw,640px) auto no-repeat;
-  opacity:.075;
-}
 .app,.shell{position:relative;z-index:1}
 .brand__icon{
   min-width:56px;min-height:56px;padding:0;display:grid;place-items:center;border-radius:18px;
@@ -69,9 +60,7 @@ html[data-theme="light"] body{
     radial-gradient(circle at 100% 30%,rgba(20,223,244,.08),transparent 30%),
     linear-gradient(160deg,#fbfdff,#edf5fd 52%,#f7fbff);
 }
-html[data-theme="light"] body::after{opacity:.045}
 @media(max-width:560px){
-  body::after{background-size:min(90vw,420px)}
   .brand__icon{min-width:48px;min-height:48px;border-radius:15px}
   .hero__logo{width:96px;border-radius:21px}
 }
