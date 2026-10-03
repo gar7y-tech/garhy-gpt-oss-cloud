@@ -373,3 +373,33 @@ html[data-theme="light"] .corporate-wordmark,html[data-theme="light"] .secure-ch
   .card,.metric,.settings-grid .setting,.metrics article{border-radius:10px}
   .brand__icon{border-radius:10px}
 }
+
+
+/* Account review / restriction state */
+.account-restriction{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin:0 0 16px;
+  padding:14px 16px;
+  border:1px solid rgba(247,166,0,.36);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(247,166,0,.10),rgba(247,166,0,.04));
+  box-shadow:inset 0 1px rgba(255,255,255,.03);
+}
+.account-restriction.hidden{display:none!important}
+.account-restriction__icon{
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  flex:0 0 40px;
+  border-radius:10px;
+  background:rgba(247,166,0,.12);
+  color:var(--brand-blue,#f7a600);
+}
+.account-restriction__icon svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.account-restriction strong{display:block;color:var(--text,#f5f6f7);font-size:15px;line-height:1.4}
+.account-restriction p{margin:4px 0 0;color:var(--muted,#929aa5);font-size:13px;line-height:1.7}
+[data-theme="light"] .account-restriction{background:#fff8e6;border-color:#f0c15b}
+[data-theme="light"] .account-restriction strong{color:#111419}
