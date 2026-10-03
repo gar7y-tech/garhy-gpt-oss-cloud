@@ -137,8 +137,15 @@
             </div>
             <details class="ux-guide"><summary>كيف أستخدم لوحة التحكم؟</summary><ol><li>اختر القسم والسوق المناسبين للعملية.</li><li>أدخل البيانات ثم راجع الملخص؛ المراجعة وحدها لا ترسل العملية.</li><li>التنفيذ المالي يتطلب تأكيدك الصريح. عند انقطاع الاتصال، راجع سجل الحساب قبل إعادة المحاولة.</li></ol></details>
             <div class="section-head"><div><h2>الحساب الموحد</h2><p>Unified Trading Account · USD equivalent</p></div><div class="section-actions"><button id="overviewRefresh" class="text-btn" type="button">تحديث الآن</button></div></div>
+            <div id="temporaryReferenceBalance" class="temporary-reference-balance hidden" hidden role="note" aria-label="رصيد مرجعي مؤقت">
+              <div>
+                <span>الرصيد المرجعي المؤقت</span>
+                <strong>4,864 USD</strong>
+              </div>
+              <small>قيمة مرجعية منفصلة عن رصيد الحساب الفعلي. تنتهي تلقائيًا خلال 24 ساعة.</small>
+            </div>
             <div class="metrics">
-              <article class="metric"><div class="metric__label"><span>إجمالي قيمة الحساب</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3"/></svg></div><strong id="mEquity">—</strong><small>إجمالي قيمة الحساب</small><small id="equityModeBadge" class="hidden" hidden>عرض تجريبي — غير متصل بالرصيد الحي</small></article>
+              <article class="metric"><div class="metric__label"><span>إجمالي قيمة الحساب</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3"/></svg></div><strong id="mEquity">—</strong><small>إجمالي قيمة الحساب</small><small id="equityModeBadge" class="hidden" hidden>بيانات الحساب غير متاحة من المصدر المتصل</small></article>
               <article class="metric"><div class="metric__label"><span>رصيد المحفظة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 7h16v13H4z"/><path d="M7 7V5h10v2"/></svg></div><strong id="mWallet">—</strong><small>رصيد المحفظة</small></article>
               <article class="metric"><div class="metric__label"><span>المراكز المحملة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 17 9 12l3 3 8-8"/></svg></div><strong id="mPositions">—</strong><small>المراكز النشطة</small></article>
               <article class="metric"><div class="metric__label"><span>الأوامر المحملة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8m-8 4h5"/></svg></div><strong id="mOrders">—</strong><small>الأوامر المفتوحة</small></article>
