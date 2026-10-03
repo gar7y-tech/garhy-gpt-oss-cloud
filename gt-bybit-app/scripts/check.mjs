@@ -29,7 +29,7 @@ for(const page of [html,p2pHtml]) {
   }
 }
 
-assert.ok(Array.isArray(manifest.icons) && manifest.icons.some((icon)=>icon.src==='/assets/gt-crypto/bybit-icon.svg' && icon.type==='image/svg+xml'),'Manifest must use the approved GT CRYPTO application mark');
+assert.ok(Array.isArray(manifest.icons) && manifest.icons.some((icon)=>icon.src==='/assets/gt-crypto/gt-crypto-mark.svg' && icon.type==='image/svg+xml'),'Manifest must use the approved GT CRYPTO application mark');
 
 assert.equal(manifest.start_url,'/');
 assert.equal(manifest.scope,'/');
