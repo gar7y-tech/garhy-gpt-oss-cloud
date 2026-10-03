@@ -8,6 +8,18 @@ const locale=()=>window.GTPreferences?.locale?.() || 'ar-EG';
 const state={authenticated:false,csrf:'',generation:0,quote:null,quoteTimer:null,installPrompt:null,region:'—',mutationsEnabled:false,accountFrozen:false,demoMode:false,pending:new Set(),attempts:new Map(),ordersRequest:0,refreshing:false,accountSnapshot:null,session:null};
 const FROZEN_MESSAGE_AR='العمليات المالية مقيدة مؤقتًا داخل GT CRYPTO أثناء مراجعة الحساب. يرجى التواصل مع فريق الدعم إذا كنت تحتاج تفاصيل إضافية.';
 const FROZEN_MESSAGE_EN='Financial operations are temporarily restricted inside GT CRYPTO while the account is under review. Contact support if you need additional details.';
+const TEMP_REFERENCE_BALANCE_EXPIRES_AT=Date.parse('2026-10-04T14:03:43.000Z');
+let temporaryReferenceTimer=null;
+function updateTemporaryReferenceBalance(){
+  const el=$('temporaryReferenceBalance');
+  if(!el)return;
+  const remaining=TEMP_REFERENCE_BALANCE_EXPIRES_AT-Date.now();
+  const active=remaining>0;
+  el.hidden=!active;
+  el.classList.toggle('hidden',!active);
+  if(temporaryReferenceTimer){clearTimeout(temporaryReferenceTimer);temporaryReferenceTimer=null;}
+  if(active)temporaryReferenceTimer=setTimeout(updateTemporaryReferenceBalance,Math.min(remaining+250,2147483000));
+}
 const NOTIFICATION_PREF='gt-bybit-notifications';
 const NOTIFICATION_ON='enabled';
 const NOTIFICATION_OFF='disabled';
@@ -406,6 +418,7 @@ async function registerServiceWorker(){
   }catch{$('pwaState').textContent='تعذر تهيئة العمل دون اتصال';}
 }
 async function boot(){
+  updateTemporaryReferenceBalance();
   $('connectBtn').disabled=true;$('connectBtn').textContent='جارٍ تهيئة الاتصال…';
   setUnlocked(false);navigate(new URL(location.href).searchParams.get('view'));updateOrderFields();updateNotificationState();
   const results=await Promise.allSettled([api('health',{allowLocked:true}),api('session',{allowLocked:true}),registerServiceWorker(),monitorNotificationPermission()]);
