@@ -1,7 +1,11 @@
-export default function handler(req, res) {
+import {budgetReady} from '../lib/ai-guard.js';
+export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-  return res.status(200).json({
-    ok: true,
+  const abuseProtectionReady=await budgetReady();
+  const ready=Boolean(process.env.GROQ_API_KEY)&&abuseProtectionReady;
+  return res.status(ready?200:503).json({
+    ok: ready,
+    abuseProtectionReady,
     service: 'Hana AI Pro',
     brand: 'GARHY TECH',
     persona: 'feminine',
