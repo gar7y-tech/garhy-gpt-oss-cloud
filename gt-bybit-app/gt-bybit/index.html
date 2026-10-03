@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#0B0E11" />
   <meta name="color-scheme" content="dark light" />
-  <script src="/gt-bybit/preferences-bootstrap.js?v=20261003-premium2"></script>
+  <script src="/gt-bybit/preferences-bootstrap.js?v=20261003-ux3"></script>
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="referrer" content="no-referrer" />
   <meta name="application-name" content="GT CRYPTO APIs" />
@@ -15,9 +15,9 @@
   <title>GT CRYPTO APIs</title>
   <link rel="icon" type="image/svg+xml" href="/assets/gt-crypto/gt-crypto-mark.svg" />
   <link rel="manifest" href="/gt-bybit/manifest.webmanifest" />
-  <link rel="stylesheet" href="/gt-bybit/app.css?v=20261003-premium2" />
-  <link rel="stylesheet" href="/gt-bybit/brand.css?v=20261003-premium2" />
-  <link rel="stylesheet" href="/gt-bybit/premium.css?v=20261003-premium2" />
+  <link rel="stylesheet" href="/gt-bybit/app.css?v=20261003-ux3" />
+  <link rel="stylesheet" href="/gt-bybit/brand.css?v=20261003-ux3" />
+  <link rel="stylesheet" href="/gt-bybit/premium.css?v=20261003-ux3" />
 </head>
 <body data-locked="true">
   <a class="skip-link" href="#mainContent">تخطَّ إلى المحتوى الرئيسي</a>
@@ -112,6 +112,7 @@
         </section>
 
         <div id="secureApp" class="hidden" hidden>
+          <p id="uxFormStatus" class="ux-feedback" role="status" aria-live="polite"></p>
           <section class="view active" data-view-panel="overview">
             <div class="hero">
               <div class="hero__row">
@@ -125,6 +126,12 @@
               </div>
             </div>
 
+            <div class="quick-actions" role="group" aria-label="اختصارات الحساب">
+              <button class="quick-action" type="button" data-view="trade"><span class="quick-action__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3v4m0 6v8M3 7h6v6H3zM17 3v9m0 6v3m-3-9h6v6h-6z"/></svg></span><span><strong>إنشاء أمر</strong><small>راجع التفاصيل قبل الإرسال</small></span></button>
+              <button class="quick-action" type="button" data-view="risk"><span class="quick-action__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 3 8.5 7 10 4-1.5 7-5.6 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>إدارة الحماية</strong><small>الرافعة ووقف الخسارة</small></span></button>
+              <button class="quick-action" type="button" data-view="assets"><span class="quick-action__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4"/></svg></span><span><strong>تحويل الأصول</strong><small>اختر الحساب أو اطلب عرض سعر</small></span></button>
+            </div>
+            <details class="ux-guide"><summary>كيف أستخدم لوحة التحكم؟</summary><ol><li>اختر القسم والسوق المناسبين للعملية.</li><li>أدخل البيانات ثم راجع الملخص؛ المراجعة وحدها لا ترسل العملية.</li><li>التنفيذ المالي يتطلب تأكيدك الصريح. عند انقطاع الاتصال، راجع سجل الحساب قبل إعادة المحاولة.</li></ol></details>
             <div class="section-head"><div><h2>الحساب الموحد</h2><p>Unified Trading Account · USD equivalent</p></div><div class="section-actions"><button id="overviewRefresh" class="text-btn" type="button">تحديث الآن</button></div></div>
             <div class="metrics">
               <article class="metric"><div class="metric__label"><span>إجمالي قيمة الحساب</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-7m5 7V3"/></svg></div><strong id="mEquity">—</strong><small>إجمالي قيمة الحساب</small><small id="equityModeBadge" class="hidden" hidden>عرض تجريبي — غير متصل بالرصيد الحي</small></article>
@@ -219,6 +226,7 @@
   </nav>
 
   <dialog id="confirmDialog" aria-labelledby="confirmationTitle" aria-describedby="confirmationWarning">
+    <span class="review-step">مراجعة نهائية قبل الإرسال</span>
     <h2 id="confirmationTitle">مراجعة العملية</h2>
     <p id="confirmationWarning">هذه عملية حقيقية على حسابك. راجع التفاصيل قبل التأكيد.</p>
     <dl id="confirmationSummary"></dl>
@@ -227,8 +235,9 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="/gt-bybit/preferences.js?v=20261003-premium2"></script>
-  <script src="/gt-bybit/receipts.js?v=20261003-premium2"></script>
-  <script src="/gt-bybit/app.js?v=20261003-premium2" type="module"></script>
+  <script src="/gt-bybit/preferences.js?v=20261003-ux3"></script>
+  <script src="/gt-bybit/receipts.js?v=20261003-ux3"></script>
+  <script src="/gt-bybit/app.js?v=20261003-ux3" type="module"></script>
+  <script src="/gt-bybit/ux.js?v=20261003-ux3" type="module"></script>
 </body>
 </html>

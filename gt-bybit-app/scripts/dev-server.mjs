@@ -8,7 +8,7 @@ import {fixtureEnv,memoryStore,mockRequest} from '../test/helpers.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const port=Number(process.env.GT_QA_PORT || 4173);
 const origin=`http://localhost:${port}`;
-const env=fixtureEnv();env.BYBIT_ALLOWED_ORIGINS=origin;env.GT_APP_MODE='ui-testing';
+const env=fixtureEnv();env.BYBIT_ALLOWED_ORIGINS=origin;env.GT_APP_MODE=process.env.GT_QA_GUARDED==='1'?'production':'ui-testing';
 const calls=[];
 const handler=createHandler({env,store:memoryStore(),request:mockRequest(calls),storageReady:()=>true});
 const config=JSON.parse(await readFile(path.join(root,'vercel.json'),'utf8'));

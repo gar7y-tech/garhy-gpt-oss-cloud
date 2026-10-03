@@ -3,7 +3,7 @@
 
   const THEME_KEY = 'gt-bybit-theme';
   const LANG_KEY = 'gt-bybit-language';
-  const COLORS = { dark: '#07111F', light: '#F4F8FF' };
+  const COLORS = { dark: '#0B0E11', light: '#F6F7F8' };
   let theme = 'dark';
   let language = 'ar';
   let observer;
@@ -109,6 +109,18 @@
     'إغلاق':'Close',
     'الإيصال يثبت الطلب الذي قبلته الخدمة. بعض العمليات تحتاج مراجعة سجل الحساب للتأكد من حالة التسوية النهائية.':'This receipt records the request accepted by the service. Some operations require account-history verification for final settlement status.'
   };
+
+  Object.assign(EN, {
+    'جارٍ تهيئة الاتصال…':'Preparing connection…',
+    'عرض تجريبي — غير متصل بالرصيد الحي':'Demo display — not connected to live balances',
+    'اختصارات الحساب':'Account shortcuts','إنشاء أمر':'Create an order','راجع التفاصيل قبل الإرسال':'Review details before sending',
+    'إدارة الحماية':'Manage protection','الرافعة ووقف الخسارة':'Leverage and stop loss','تحويل الأصول':'Transfer assets',
+    'اختر الحساب أو اطلب عرض سعر':'Choose an account or request a quote','كيف أستخدم لوحة التحكم؟':'How do I use the control panel?',
+    'اختر القسم والسوق المناسبين للعملية.':'Choose the relevant section and market for your operation.',
+    'أدخل البيانات ثم راجع الملخص؛ المراجعة وحدها لا ترسل العملية.':'Enter your data and review the summary; review alone does not send the operation.',
+    'التنفيذ المالي يتطلب تأكيدك الصريح. عند انقطاع الاتصال، راجع سجل الحساب قبل إعادة المحاولة.':'Financial execution requires your explicit confirmation. If connectivity is interrupted, check account history before trying again.',
+    'مراجعة نهائية قبل الإرسال':'Final review before sending'
+  });
 
   const AR = new Map(Object.entries(EN).map(([ar, en]) => [en, ar]));
   const textSource = new WeakMap();

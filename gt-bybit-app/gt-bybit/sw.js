@@ -1,5 +1,5 @@
-const CACHE='gt-bybit-shell-20261003-premium2';
-const VERSION='20261003-premium2';
+const CACHE='gt-bybit-shell-20261003-ux3';
+const VERSION='20261003-ux3';
 const STATIC=[
   '/gt-bybit/index.html',
   '/gt-bybit/p2p.html',
@@ -11,6 +11,7 @@ const STATIC=[
   `/gt-bybit/preferences.js?v=${VERSION}`,
   `/gt-bybit/receipts.js?v=${VERSION}`,
   `/gt-bybit/app.js?v=${VERSION}`,
+  `/gt-bybit/ux.js?v=${VERSION}`,
   `/gt-bybit/demo-state.js?v=${VERSION}`,
   `/gt-bybit/p2p-console.js?v=${VERSION}`,
   `/gt-bybit/validation.js?v=${VERSION}`,
