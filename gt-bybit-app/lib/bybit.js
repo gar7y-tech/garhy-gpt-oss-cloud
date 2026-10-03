@@ -3,10 +3,10 @@ import { AppError, assert } from './errors.js';
 
 const HOSTS = new Set(['api.bybit.com', 'api.bytick.com', 'api-testnet.bybit.com', 'api-demo.bybit.com', 'api.bybit.nl', 'api.bybit.tr', 'api.bybit.kz', 'api.bybitgeorgia.ge', 'api.bybit.ae', 'api.bybit.eu', 'api.bybit.id', 'api.manepa.jp', 'api-testnet.manepa.jp', 'api.spark-fintech.com', 'api-testnet.spark-fintech.com']);
 const MESSAGES = [
-  [[10003,10004,10007,10010,33004,-2015], 'INVALID_CREDENTIALS', 'مفاتيح Bybit غير صالحة أو منتهية أو لا تطابق بيئة الحساب أو عنوان IP.', 502],
+  [[10003,10004,10007,10010,33004,-2015], 'INVALID_CREDENTIALS', 'مفاتيح الاتصال غير صالحة أو منتهية أو لا تطابق بيئة الحساب أو عنوان IP.', 502],
   [[10005,10008,10024,10027,10028,100028,110067], 'PERMISSION_DENIED', 'صلاحيات المفتاح أو نوع الحساب لا يسمح بهذه العملية.', 403],
-  [[10006,10018,10429,20003], 'RATE_LIMITED', 'تم بلوغ حد طلبات Bybit. انتظر قبل المحاولة مجددًا.', 429],
-  [[10000,10016,10019], 'SERVICE_UNAVAILABLE', 'خدمة Bybit غير متاحة مؤقتًا. تحقق من حالة العملية قبل إعادة إرسالها.', 502],
+  [[10006,10018,10429,20003], 'RATE_LIMITED', 'تم بلوغ حد طلبات الخدمة. انتظر قبل المحاولة مجددًا.', 429],
+  [[10000,10016,10019], 'SERVICE_UNAVAILABLE', 'الخدمة المتصلة غير متاحة مؤقتًا. تحقق من حالة العملية قبل إعادة إرسالها.', 502],
   [[10002,-1], 'TIMESTAMP_ERROR', 'توقيت الطلب خارج النافذة المسموحة. تحقق من ساعة الخادم.', 502],
   [[10014,110072,131214], 'DUPLICATE_REQUEST', 'هذا الطلب مكرر. راجع سجل العمليات قبل إرسال طلب جديد.', 409],
   [[110004,110006,110007,110012,110014,110044,110045,170131,170132,131001,131212], 'INSUFFICIENT_BALANCE', 'الرصيد المتاح غير كافٍ لهذه العملية.', 400],
@@ -24,12 +24,12 @@ export class BybitError extends AppError {}
 export function getBybitConfig(env = process.env) {
   const apiKey = env.BYBIT_API_KEY?.trim();
   const apiSecret = env.BYBIT_API_SECRET?.trim();
-  assert(apiKey && apiSecret, 'BYBIT_NOT_CONFIGURED', 'مفاتيح Bybit غير مهيأة على الخادم.', 503);
+  assert(apiKey && apiSecret, 'BYBIT_NOT_CONFIGURED', 'مفاتيح الاتصال غير مهيأة على الخادم.', 503);
   let url;
   try { url = new URL(env.BYBIT_API_BASE_URL || 'https://api.bybit.com'); } catch { /* validated below */ }
-  assert(url && url.protocol === 'https:' && HOSTS.has(url.hostname) && !url.port && !url.username && !url.password && url.pathname === '/' && !url.search && !url.hash, 'BYBIT_CONFIG_INVALID', 'عنوان Bybit غير صالح.', 503);
+  assert(url && url.protocol === 'https:' && HOSTS.has(url.hostname) && !url.port && !url.username && !url.password && url.pathname === '/' && !url.search && !url.hash, 'BYBIT_CONFIG_INVALID', 'عنوان الخدمة المتصلة غير صالح.', 503);
   const recvWindow = Number(env.BYBIT_RECV_WINDOW || 5000);
-  assert(Number.isInteger(recvWindow) && recvWindow >= 1000 && recvWindow <= 10000, 'BYBIT_CONFIG_INVALID', 'نافذة توقيت Bybit غير صالحة.', 503);
+  assert(Number.isInteger(recvWindow) && recvWindow >= 1000 && recvWindow <= 10000, 'BYBIT_CONFIG_INVALID', 'نافذة توقيت الخدمة غير صالحة.', 503);
   return { apiKey, apiSecret, baseUrl: url.origin, recvWindow };
 }
 
@@ -52,9 +52,9 @@ function upstreamError(data, status, p2p = false) {
   let info = MESSAGES.find(([codes]) => codes.includes(retCode));
   // Only use upstream text for classification; never reflect it to the client or logs.
   if (retCode === 10001 && /position idx|position mode/i.test(data?.retMsg || '')) info = [[], 'POSITION_MODE_MISMATCH', 'اختيار جهة المركز لا يطابق وضع الحساب.', 400];
-  if (status === 429) info = [[], 'RATE_LIMITED', 'تم بلوغ حد طلبات Bybit. انتظر قبل المحاولة مجددًا.', 429];
-  if (status === 403 && !info) info = [[], 'UPSTREAM_ACCESS_DENIED', 'رفضت Bybit الاتصال من الخادم. راجع المنطقة وصلاحيات الوصول.', 502];
-  const [,code,message,httpStatus] = info || [[], 'BYBIT_REJECTED', 'رفضت Bybit الطلب. راجع المدخلات وصلاحيات الحساب ورمز الخطأ.', status >= 500 ? 502 : 400];
+  if (status === 429) info = [[], 'RATE_LIMITED', 'تم بلوغ حد طلبات الخدمة. انتظر قبل المحاولة مجددًا.', 429];
+  if (status === 403 && !info) info = [[], 'UPSTREAM_ACCESS_DENIED', 'رفض المصدر المتصل الاتصال من الخادم. راجع المنطقة وصلاحيات الوصول.', 502];
+  const [,code,message,httpStatus] = info || [[], 'BYBIT_REJECTED', 'رفض المصدر المتصل الطلب. راجع المدخلات وصلاحيات الحساب ورمز الخطأ.', status >= 500 ? 502 : 400];
   return new BybitError(code, message, httpStatus, { retCode });
 }
 
@@ -82,17 +82,17 @@ export function createBybitClient({ env = process.env, fetchImpl = fetch, now = 
       let data;
       try { data = await response.json(); } catch {
         if (!response.ok) throw upstreamError(null, response.status, p2p);
-        throw new BybitError('MALFORMED_UPSTREAM', 'استجابة Bybit غير صالحة.', 502);
+        throw new BybitError('MALFORMED_UPSTREAM', 'استجابة المصدر المتصل غير صالحة.', 502);
       }
       const retCode = p2p && typeof data?.ret_code === 'number' ? data.ret_code : data?.retCode;
-      assert(!p2p || typeof data?.ret_code !== 'number' || typeof data?.retCode !== 'number' || data.ret_code === data.retCode, 'MALFORMED_UPSTREAM', 'استجابة Bybit غير مكتملة.', 502);
+      assert(!p2p || typeof data?.ret_code !== 'number' || typeof data?.retCode !== 'number' || data.ret_code === data.retCode, 'MALFORMED_UPSTREAM', 'استجابة المصدر المتصل غير مكتملة.', 502);
       if (!response.ok || (typeof retCode === 'number' && retCode !== 0)) throw upstreamError(data, response.status, p2p);
-      assert(data && retCode === 0 && data.result && typeof data.result === 'object' && !Array.isArray(data.result), 'MALFORMED_UPSTREAM', 'استجابة Bybit غير مكتملة.', 502);
+      assert(data && retCode === 0 && data.result && typeof data.result === 'object' && !Array.isArray(data.result), 'MALFORMED_UPSTREAM', 'استجابة المصدر المتصل غير مكتملة.', 502);
       return data;
     } catch (error) {
       if (error instanceof AppError) throw error;
       const timedOut = ['TimeoutError','AbortError'].includes(error?.name);
-      throw new BybitError(timedOut ? 'UPSTREAM_TIMEOUT' : 'NETWORK_ERROR', timedOut ? 'انتهت مهلة الاتصال. حالة العملية غير مؤكدة؛ راجع سجلها قبل أي محاولة جديدة.' : 'تعذر الاتصال بـBybit. تحقق من حالة العملية قبل إعادة إرسالها.', timedOut ? 504 : 502);
+      throw new BybitError(timedOut ? 'UPSTREAM_TIMEOUT' : 'NETWORK_ERROR', timedOut ? 'انتهت مهلة الاتصال. حالة العملية غير مؤكدة؛ راجع سجلها قبل أي محاولة جديدة.' : 'تعذر الاتصال بالمصدر المتصل. تحقق من حالة العملية قبل إعادة إرسالها.', timedOut ? 504 : 502);
     }
   };
 }
