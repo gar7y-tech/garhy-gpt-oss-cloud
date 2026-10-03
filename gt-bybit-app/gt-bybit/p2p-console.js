@@ -15,8 +15,8 @@ let accountFrozen=false;
 let demoMode=false;
 const FROZEN_MESSAGE_AR='الحساب مجمد مؤقتا لسلامة اصولك وامان حسابك ونعتذر بشده عن هذا لازعاج يرجي التواصل مع فريق الدعم';
 const FROZEN_MESSAGE_EN='The account is temporarily frozen to protect your assets and account security. We sincerely apologize for the inconvenience. Please contact the support team.';
-const DEMO_MESSAGE_AR='العرض الحالي ثابت ولا ينفذ أي عمليات مالية حقيقية.';
-const DEMO_MESSAGE_EN='The current fixed presentation does not execute real financial operations.';
+const DEMO_MESSAGE_AR='البيانات المالية الحية غير متاحة حاليًا ولا يمكن تنفيذ عمليات مالية.';
+const DEMO_MESSAGE_EN='Live financial data is currently unavailable and financial operations cannot be executed.';
 
 const $ = (id) => document.getElementById(id);
 const locale = () => window.GTPreferences?.locale?.() || 'ar-EG';
@@ -258,13 +258,13 @@ async function checkStatus() {
     accountFrozen=result.accountFrozen===true;demoMode=result.financialDataMode==='presentation';
     $('mApi').textContent = result.available===true?'متاح':'عرض فقط';
     $('mApiSub').textContent = result.available===true?'P2P Open API active':'لم يتم التحقق من صلاحيات P2P الحية';
-    $('capabilityText').textContent = demoMode ? 'العرض الحالي ثابت؛ المراقبة المالية الحية والعمليات المالية محظورة.' : accountFrozen ? 'الحساب مجمد مؤقتا. العرض والمراقبة متاحان لكن جميع العمليات المالية محظورة حتى مراجعة فريق الدعم.' : 'P2P Open API متاح للحساب. المراقبة الآلية تعمل، والعمليات الحساسة ما زالت يدوية.';
+    $('capabilityText').textContent = demoMode ? 'البيانات المالية الحية غير متاحة حاليًا؛ المراقبة والعمليات المالية غير متاحة.' : accountFrozen ? 'الحساب مجمد مؤقتا. العرض والمراقبة متاحان لكن جميع العمليات المالية محظورة حتى مراجعة فريق الدعم.' : 'P2P Open API متاح للحساب. المراقبة الآلية تعمل، والعمليات الحساسة ما زالت يدوية.';
     $('permissionAlert').classList.add('hidden');
-    setState((demoMode||accountFrozen)?'error':'ok',demoMode?'عرض ثابت':accountFrozen?'الحساب مجمد':'P2P متصل');
+    setState((demoMode||accountFrozen)?'error':'ok',demoMode?'غير متاح':accountFrozen?'الحساب مجمد':'P2P متصل');
     return result;
   } catch (error) {
     $('mApi').textContent = 'مغلق';
-    $('mApiSub').textContent = Number.isInteger(error.data?.retCode) ? `Bybit retCode ${error.data.retCode}` : 'لم يتم التحقق من الصلاحيات';
+    $('mApiSub').textContent = Number.isInteger(error.data?.retCode) ? `Provider retCode ${error.data.retCode}` : 'لم يتم التحقق من الصلاحيات';
     $('capabilityText').textContent = error.data?.error==='PERMISSION_DENIED' ? 'تسجيل الدخول يعمل، لكن المفتاح أو حساب المعلن لا يملك صلاحيات P2P Open API المطلوبة.' : `تعذر التحقق من P2P Open API: ${error.message}`;
     $('permissionAlert').classList.remove('hidden');
     setState('error', 'P2P غير متاح');
@@ -294,11 +294,11 @@ async function refreshAll(showToast = false) {
       latestAds=[];
       $('mPending').textContent='—';
       $('mAds').textContent='—';
-      $('pendingTable').innerHTML='<div class="empty">طلبات P2P الحية غير معروضة في العرض الحالي.</div>';
-      $('adsTable').innerHTML='<div class="empty">إعلانات P2P الحية غير معروضة في العرض الحالي.</div>';
-      resetPriceMonitor('مراقبة السعر الحية متوقفة في العرض الحالي.');
+      $('pendingTable').innerHTML='<div class="empty">طلبات P2P الحية غير متاحة حاليًا.</div>';
+      $('adsTable').innerHTML='<div class="empty">إعلانات P2P الحية غير متاحة حاليًا.</div>';
+      resetPriceMonitor('مراقبة السعر الحية غير متاحة حاليًا.');
       $('mSync').textContent = new Date().toLocaleTimeString(locale(), { hour: '2-digit', minute: '2-digit' });
-      if (showToast) toast('العرض الحالي لا يستخدم مزامنة مالية حية.', 'success');
+      if (showToast) toast('المزامنة المالية الحية غير متاحة حاليًا.', 'success');
       return;
     }
     await Promise.all([refreshPending(false), refreshAds(false)]);
@@ -308,8 +308,8 @@ async function refreshAll(showToast = false) {
   } catch (error) {
     $('mPending').textContent = '—';
     $('mAds').textContent = '—';
-    $('pendingTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحيات P2P من Bybit.</div>';
-    $('adsTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحية Advertising من Bybit.</div>';
+    $('pendingTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحيات P2P.</div>';
+    $('adsTable').innerHTML = '<div class="empty">بانتظار تفعيل صلاحية Advertising.</div>';
     if (showToast) toast(error.message, 'error');
   }
 }
@@ -434,7 +434,7 @@ $('applyTargetBtn').addEventListener('click',async()=>{
       payload:{itemId:data.ad.itemId,price:target},
       confirm:'UPDATE_P2P_AD',
     });
-    toast('تم إرسال تحديث السعر إلى Bybit وتم إنشاء إيصال PDF.','success');
+    toast('تم إرسال تحديث السعر إلى الخدمة وتم إنشاء إيصال PDF.','success');
     await refreshAds(false);
     await refreshPriceMonitor(false);
   }catch(error){
@@ -483,7 +483,7 @@ $('messageForm').addEventListener('submit', async (event) => {
     event.currentTarget.elements.message.value = '';
     const messages = await request({ action: 'messages', orderId: body.orderId, size: 30, lastId: 0 });
     renderMessages(messages);
-    toast('تم إرسال الرسالة عبر Bybit P2P.', 'success');
+    toast('تم إرسال الرسالة عبر خدمة P2P.', 'success');
   } catch (error) {
     toast(error.message, 'error');
   }
@@ -497,7 +497,7 @@ $('paidForm').addEventListener('submit', async (event) => {
   if (!confirm(`تأكيد Mark as Paid للطلب ${body.orderId}؟\nنفّذ فقط إذا كنت قد أرسلت الدفع بالفعل.`)) return;
   try {
     await financialRequest({ action: 'mark-paid', orderId: body.orderId, paymentType: body.paymentType, confirm: 'P2P_PAID' });
-    toast('تم إرسال Mark as Paid إلى Bybit وتم إنشاء إيصال PDF.', 'success');
+    toast('تم إرسال Mark as Paid إلى الخدمة وتم إنشاء إيصال PDF.', 'success');
     event.currentTarget.elements.confirm.value = '';
     await refreshAll(false);
   } catch (error) {
@@ -510,10 +510,10 @@ $('releaseForm').addEventListener('submit', async (event) => {
   if(accountFrozen)return showFrozenNotice();
   const body = formObject(event.currentTarget);
   if (body.confirm !== 'RELEASE_P2P') return toast('اكتب RELEASE_P2P حرفيًا للتأكيد.', 'error');
-  if (!confirm(`تحذير: سيتم Release للأصول في الطلب ${body.orderId}.\n\nلا تؤكد إلا بعد التحقق الفعلي من وصول الأموال خارج Bybit عند الحاجة.`)) return;
+  if (!confirm(`تحذير: سيتم Release للأصول في الطلب ${body.orderId}.\n\nلا تؤكد إلا بعد التحقق الفعلي من وصول الأموال خارج المنصة عند الحاجة.`)) return;
   try {
     await financialRequest({ action: 'release', orderId: body.orderId, confirm: 'RELEASE_P2P' });
-    toast('تم إرسال Release Assets إلى Bybit وتم إنشاء إيصال PDF.', 'success');
+    toast('تم إرسال Release Assets إلى الخدمة وتم إنشاء إيصال PDF.', 'success');
     event.currentTarget.elements.confirm.value = '';
     await refreshAll(false);
   } catch (error) {

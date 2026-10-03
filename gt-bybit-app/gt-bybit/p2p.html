@@ -32,7 +32,7 @@
   <main id="mainContent" class="shell" tabindex="-1">
     <section id="authGate" class="auth-card">
       <div class="auth-copy">
-        <span class="eyebrow">BYBIT P2P OPEN API</span>
+        <span class="eyebrow">P2P OPEN API</span>
         <h1>مركز عمليات P2P</h1>
         <p>إدارة الطلبات والإعلانات والمحادثات مع أتمتة مراقبة آمنة. لا يتم تنفيذ Release أو Mark as Paid تلقائيًا.</p>
       </div>
@@ -61,8 +61,8 @@
 
       <div id="permissionAlert" class="alert warning hidden">
         <strong>P2P Open API غير متاح حاليًا</strong>
-        <span>حالة «معلن عام» وحدها لا تثبت تشغيل Open API. تحقّق من قبول طلب P2P Open API ومن تمكين صلاحيات P2P للمفتاح في موقع Bybit؛ لا تُنشئ مفتاحًا داخل هذه الصفحة.</span>
-        <a href="https://www.bybit.com/en/help-center/article/Introduction-to-P2P-Open-API" target="_blank" rel="noopener noreferrer">خطوات التفعيل الرسمية من Bybit</a>
+        <span>حالة «معلن عام» وحدها لا تثبت تشغيل Open API. تحقّق من قبول طلب P2P Open API ومن تمكين صلاحيات P2P للمفتاح لدى مزود الخدمة؛ لا تُنشئ مفتاحًا داخل هذه الصفحة.</span>
+        <span>راجع تعليمات مزود الخدمة الرسمية لتفعيل صلاحيات P2P Open API.</span>
       </div>
 
       <section class="metrics">
@@ -115,7 +115,7 @@
         <article class="card">
           <div class="card-head"><div><h2>تفاصيل طلب</h2><p>Order + Counterparty + Chat</p></div></div>
           <form id="orderLookupForm" class="form">
-            <label><span>ORDER ID</span><input name="orderId" required placeholder="Bybit P2P Order ID" /></label>
+            <label><span>ORDER ID</span><input name="orderId" required placeholder="P2P Order ID" /></label>
             <button class="btn primary" type="submit">تحميل التفاصيل</button>
           </form>
           <div id="orderDetail" class="detail"><div class="empty">أدخل Order ID لعرض التفاصيل.</div></div>
@@ -123,7 +123,7 @@
         </article>
 
         <article class="card">
-          <div class="card-head"><div><h2>محادثة P2P</h2><p>رسائل يدوية عبر Bybit Open API</p></div></div>
+          <div class="card-head"><div><h2>محادثة P2P</h2><p>رسائل يدوية عبر P2P Open API</p></div></div>
           <form id="messageForm" class="form">
             <label><span>ORDER ID</span><input name="orderId" required placeholder="Order ID" /></label>
             <label class="wide"><span>MESSAGE</span><textarea name="message" required maxlength="1000" placeholder="اكتب الرسالة…"></textarea></label>

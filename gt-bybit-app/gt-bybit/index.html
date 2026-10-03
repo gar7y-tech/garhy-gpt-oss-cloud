@@ -65,7 +65,7 @@
 
     <main id="mainContent" class="main" tabindex="-1">
       <header class="appbar">
-        <div class="appbar__title"><strong id="pageTitle">الرئيسية</strong><small>GT CRYPTO APIs · إدارة حساب Bybit</small></div>
+        <div class="appbar__title"><strong id="pageTitle">الرئيسية</strong><small>GT CRYPTO APIs · إدارة الحساب</small></div>
         <div class="appbar__actions">
           <div id="serviceStatus" class="status" data-state="idle"><span class="status__dot"></span><span>جارٍ الفحص</span></div>
           <button id="installBtn" class="install-btn hidden" hidden type="button">تثبيت التطبيق</button>
@@ -116,7 +116,7 @@
           <section class="view active" data-view-panel="overview">
             <div id="accountRestrictionNotice" class="account-restriction hidden" hidden role="status" aria-live="polite">
               <div class="account-restriction__icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.4 3 8.5 7 10 4-1.5 7-5.6 7-10V6l-7-3Z"/><path d="M12 8v5m0 3h.01"/></svg></div>
-              <div><strong id="accountRestrictionTitle">جاري مراجعة الحساب</strong><p id="accountRestrictionText">تم تقييد العمليات المالية داخل GT CRYPTO أثناء مراجعة الحساب.</p></div>
+              <div><strong id="accountRestrictionTitle">جاري مراجعة الحساب</strong><p id="accountRestrictionText">الحساب مجمد مؤقتا لسلامة اصولك وامان حسابك ونعتذر بشده عن هذا لازعاج يرجي التواصل مع فريق الدعم</p></div>
             </div>
             <div class="hero">
               <div class="hero__row">
@@ -140,8 +140,7 @@
             <div id="temporaryReferenceBalance" class="temporary-reference-balance hidden" hidden role="note" aria-label="تنبيه الحساب">
               <div>
                 <strong>4,864 USD</strong>
-                <span class="temporary-reference-balance__notice">الحساب مجمد مؤقتا لسلامة اصولك وامان حسابك ونعتذر بشده عن هذا لازعاج يرجي التواصل مع فريق الدعم</span>
-                <small>عرض توضيحي غير مرتبط بالرصيد الفعلي من Bybit.</small>
+                <small>القيمة المعروضة ليست الرصيد الحي من المصدر المتصل.</small>
               </div>
             </div>
             <div class="metrics">
@@ -151,7 +150,7 @@
               <article class="metric"><div class="metric__label"><span>الأوامر المحملة</span><svg width="24" height="24" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8m-8 4h5"/></svg></div><strong id="mOrders">—</strong><small>الأوامر المفتوحة</small></article>
             </div>
 
-            <div class="section-head"><div><h2>تفاصيل الحساب</h2><p>أرصدة ومراكز مباشرة من Bybit</p></div></div>
+            <div class="section-head"><div><h2>تفاصيل الحساب</h2><p>أرصدة ومراكز من المصدر المتصل</p></div></div>
             <div class="grid">
               <article class="card span-6"><div class="card__head"><div><h3>المحفظة</h3><small>الأرصدة غير الصفرية</small></div></div><div class="card__body"><div id="walletTable" class="table-wrap"><div class="empty">جارٍ التحميل...</div></div></div></article>
               <article class="card span-6"><div class="card__head"><div><h3>المراكز المفتوحة</h3><small>Linear · USDT</small></div></div><div class="card__body"><div id="positionsTable" class="table-wrap"><div class="empty">جارٍ التحميل...</div></div></div></article>
@@ -197,7 +196,7 @@
           </section>
 
           <section class="view" hidden data-view-panel="assets">
-            <div class="section-head"><div><h2>الأصول والتحويلات</h2><p>تحويل داخلي بين الحسابات وBybit Convert.</p></div></div>
+            <div class="section-head"><div><h2>الأصول والتحويلات</h2><p>تحويل داخلي بين الحسابات وخدمة التحويل.</p></div></div>
             <div class="grid">
               <article class="card span-6"><div class="card__head"><div><h3>تحويل داخلي</h3><small>UNIFIED ↔ FUND</small></div></div><div class="card__body"><form id="transferForm" class="form-block"><div class="form-grid"><label class="field"><span>العملة</span><input name="coin" required placeholder="USDT" /></label><label class="field"><span>المبلغ</span><input name="amount" inputmode="decimal" required placeholder="10" /></label><label class="field"><span>حساب المصدر</span><select name="fromAccountType"><option value="UNIFIED">UNIFIED</option><option value="FUND">FUND</option></select></label><label class="field"><span>حساب الوجهة</span><select name="toAccountType"><option value="FUND">FUND</option><option value="UNIFIED">UNIFIED</option></select></label><button class="btn btn--primary wide" type="submit">مراجعة التحويل</button><p id="availableAssets" class="field-hint wide" role="status">العملات المتاحة تظهر بعد اختيار حسابي التحويل.</p></div></form></div></article>
               <article class="card span-6"><div class="card__head"><div><h3>Convert</h3><small>عرض سعر قبل التنفيذ</small></div></div><div class="card__body"><form id="convertForm" class="form-block"><div class="form-grid"><label class="field"><span>من عملة</span><input name="fromCoin" required placeholder="USDT" /></label><label class="field"><span>إلى عملة</span><input name="toCoin" required placeholder="USDC" /></label><label class="field wide"><span>المبلغ</span><input name="requestAmount" inputmode="decimal" required placeholder="10" /></label><label class="field wide"><span>حساب التحويل</span><select name="accountType"><option value="eb_convert_uta">الحساب الموحد UNIFIED</option><option value="eb_convert_funding">حساب التمويل FUND</option></select></label><button class="btn wide" type="submit">طلب عرض سعر</button></div><div id="convertQuote" role="status" class="quote">سيظهر سعر التحويل هنا قبل التنفيذ.</div><button id="confirmConvertBtn" class="btn btn--primary hidden" hidden type="button">مراجعة تنفيذ التحويل</button></form></div></article>
@@ -210,7 +209,7 @@
               <article class="setting"><h3>تطبيق GT CRYPTO APIs</h3><p>يمكن تثبيت هذه الواجهة كتطبيق مستقل على Android/Desktop من المتصفح.</p><button id="installSettingsBtn" class="btn btn--primary" type="button">تثبيت GT CRYPTO APIs</button></article>
               <article class="setting"><h3>إشعارات الهاتف</h3><p>بعد تفعيلها يظل اختيارك محفوظًا عند تحديث الصفحة وإعادة فتح التطبيق، ولا تتوقف من داخل GT CRYPTO APIs إلا عندما توقفها يدويًا. لا تتضمن الإشعارات بيانات حساسة.</p><button id="notificationBtn" class="btn btn--primary" type="button">تفعيل الإشعارات باستمرار</button><div class="app-meta"><div class="meta-row"><span>الحالة</span><strong id="notificationState">غير مفعّلة</strong></div></div></article>
               <article class="setting"><h3>تسجيل الخروج</h3><p>ينهي جلسة التحكم على الخادم ويحذف ملف تعريف الجلسة من الجهاز.</p><button id="lockSettingsBtn" class="btn btn--danger" type="button">تسجيل الخروج</button></article>
-              <article class="setting"><h3>هوية حساب Bybit</h3><p>بيانات قراءة فقط من Bybit V5. لا يتم عرض API Key أو Secret أو عناوين IP أو صلاحيات المفتاح.</p><div class="app-meta">
+              <article class="setting"><h3>هوية الحساب</h3><p>بيانات قراءة فقط من المصدر المتصل. لا يتم عرض API Key أو Secret أو عناوين IP أو صلاحيات المفتاح.</p><div class="app-meta">
 <div class="meta-row"><span>UID</span><strong id="identityUid">—</strong></div>
 <div class="meta-row"><span>KYC</span><strong id="identityKyc">—</strong></div>
 <div class="meta-row"><span>KYC Region</span><strong id="identityRegion">—</strong></div>
@@ -219,7 +218,7 @@
 <div class="meta-row"><span>VIP</span><strong id="identityVip">—</strong></div>
 <div class="meta-row"><span>Unified Account</span><strong id="identityUnified">—</strong></div>
 <div class="meta-row"><span>API Read-only</span><strong id="identityReadOnly">—</strong></div>
-</div></article><article class="setting"><h3>حالة النظام</h3><div class="app-meta"><div class="meta-row"><span>App</span><strong>GT CRYPTO APIs</strong></div><div class="meta-row"><span>API</span><strong>Bybit V5</strong></div><div class="meta-row"><span>نوع الحساب</span><strong id="settingsAccount">—</strong></div><div class="meta-row"><span>منطقة الخادم</span><strong id="settingsRegion">—</strong></div><div class="meta-row"><span>PWA</span><strong id="pwaState">Browser</strong></div></div></article>
+</div></article><article class="setting"><h3>حالة النظام</h3><div class="app-meta"><div class="meta-row"><span>App</span><strong>GT CRYPTO APIs</strong></div><div class="meta-row"><span>API</span><strong>GT CRYPTO Secure API</strong></div><div class="meta-row"><span>نوع الحساب</span><strong id="settingsAccount">—</strong></div><div class="meta-row"><span>منطقة الخادم</span><strong id="settingsRegion">—</strong></div><div class="meta-row"><span>PWA</span><strong id="pwaState">Browser</strong></div></div></article>
               <article class="setting"><h3>سياسة الجلسة</h3><p id="sessionPolicy">لا يوجد قفل بسبب الخمول. مدة الأمان المطلقة 30 يومًا افتراضيًا، ويمكن ضبطها على الخادم.</p><div class="app-meta"><div class="meta-row"><span>حماية الجلسة</span><strong>Secure · HttpOnly</strong></div><div class="meta-row"><span>انتهاء الصلاحية المطلق</span><strong id="sessionExpiry">—</strong></div><div class="meta-row"><span>تنفيذ العمليات المالية</span><strong id="mutationsState">جارٍ الفحص</strong></div></div></article>
             </div>
           </section>

@@ -30,7 +30,7 @@
         <div><dt>SHA-256</dt><dd id="receiptIntegrity">—</dd></div>
       </dl>
       <details open><summary>تفاصيل الطلب</summary><pre id="receiptRequest"></pre></details>
-      <details><summary>استجابة Bybit</summary><pre id="receiptResult"></pre></details>
+      <details><summary>استجابة المصدر</summary><pre id="receiptResult"></pre></details>
       <p class="receipt-note">الإيصال يثبت الطلب الذي قبلته الخدمة. بعض العمليات تحتاج مراجعة سجل الحساب للتأكد من حالة التسوية النهائية.</p>
       <div class="receipt-actions">
         <a id="receiptDownload" class="btn btn--primary" download>تحميل PDF</a>
@@ -56,10 +56,10 @@
     if(!receipt || typeof receipt!=='object') return;
     const dialog=ensureDialog();
 
-    put('receiptStatus',receipt.status || 'ACCEPTED_BY_BYBIT');
+    put('receiptStatus',receipt.status || 'ACCEPTED');
     put('receiptTime',receipt.timestamp || '—');
     put('receiptId',receipt.receiptId || '—');
-    put('receiptAction',`${receipt.channel || 'BYBIT'} · ${receipt.action || '—'}`);
+    put('receiptAction',`${receipt.channel || 'GT CRYPTO'} · ${receipt.action || '—'}`);
     put('receiptRequestId',receipt.requestId || '—');
     put('receiptIntegrity',receipt.integrity || '—');
     put('receiptRequest',JSON.stringify(receipt.request ?? {},null,2));

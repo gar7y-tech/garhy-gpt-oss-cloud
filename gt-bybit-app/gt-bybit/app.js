@@ -6,7 +6,7 @@ const $=(id)=>document.getElementById(id);
 const $$=(selector)=>[...document.querySelectorAll(selector)];
 const locale=()=>window.GTPreferences?.locale?.() || 'ar-EG';
 const state={authenticated:false,csrf:'',generation:0,quote:null,quoteTimer:null,installPrompt:null,region:'—',mutationsEnabled:false,accountFrozen:false,demoMode:false,pending:new Set(),attempts:new Map(),ordersRequest:0,refreshing:false,accountSnapshot:null,session:null};
-const FROZEN_MESSAGE_AR='العمليات المالية مقيدة داخل GT CRYPTO أثناء مراجعة الحساب. يرجى التواصل مع فريق الدعم إذا كنت تحتاج تفاصيل إضافية.';
+const FROZEN_MESSAGE_AR='الحساب مجمد مؤقتا لسلامة اصولك وامان حسابك ونعتذر بشده عن هذا لازعاج يرجي التواصل مع فريق الدعم';
 const FROZEN_MESSAGE_EN='Financial operations are restricted inside GT CRYPTO while the account is under review. Contact support if you need additional details.';
 const TEMP_REFERENCE_BALANCE_EXPIRES_AT=Date.parse('2026-10-04T15:10:00.000Z');
 let temporaryReferenceTimer=null;
@@ -86,9 +86,7 @@ function renderAccountRestriction(health={}){
   const raw=health.accountRestrictionUntil;
   const until=raw?new Date(raw):null;
   const valid=until && Number.isFinite(until.getTime());
-  $('accountRestrictionText').textContent=valid
-    ? `تم تقييد العمليات المالية داخل GT CRYPTO حتى ${new Intl.DateTimeFormat(locale(),{dateStyle:'medium',timeStyle:'short'}).format(until)} أثناء مراجعة الحساب.`
-    : 'تم تقييد العمليات المالية داخل GT CRYPTO أثناء مراجعة الحساب.';
+  $('accountRestrictionText').textContent=FROZEN_MESSAGE_AR;
 }
 function escapeHtml(value) { return String(value??'').replace(/[&<>'"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function formatNumber(value,digits=4) {
@@ -260,7 +258,7 @@ async function runMutation(control,input,after=()=>{}) {
     state.attempts.delete(fingerprint);
     window.GTReceipts?.present(response.receipt);
     if(data.action==='convert-confirm')clearQuote();
-    toast('استلمت Bybit الطلب وتم إنشاء إيصال PDF. تحقّق من حالته النهائية في سجل الحساب.','success');await notify('GT CRYPTO APIs','استلمت Bybit طلب العملية بعد تأكيدك. راجع سجل الحساب للحالة النهائية.',`gt-bybit-${data.action}`);
+    toast('استلمت الخدمة الطلب وتم إنشاء إيصال PDF. تحقّق من حالته النهائية في سجل الحساب.','success');await notify('GT CRYPTO APIs','استلمت الخدمة طلب العملية بعد تأكيدك. راجع سجل الحساب للحالة النهائية.',`gt-bybit-${data.action}`);
     try {await after();} catch {toast('قُبل الطلب، لكن تعذر تحديث البيانات. حدّثها يدويًا.');}
   } catch(error){toast(error.message,'error');}
   finally{state.pending.delete('mutation');control.removeAttribute('aria-busy');updateConnectivity();}
@@ -350,7 +348,7 @@ async function refreshDashboard(showToast=true) {
     if(epoch!==state.generation || !state.authenticated)return;
     const rejected=results.filter((r)=>r.status==='rejected');
     if(rejected.length) {setStatus('error','بيانات غير مكتملة');toast(rejected[0].reason.message,'error');}
-    else {const next={equity:$('mEquity').textContent,positions:$('mPositions').textContent,orders:$('mOrders').textContent};if(state.accountSnapshot && JSON.stringify(next)!==JSON.stringify(state.accountSnapshot))await notify('تحديث حساب GT CRYPTO APIs','تم رصد تغيير في ملخص الحساب أو المراكز أو الأوامر. افتح التطبيق للمراجعة.','gt-bybit-account-change');state.accountSnapshot=next;setStatus('ok','متصل بـBybit');if(showToast)toast('تم تحديث بيانات الحساب.','success');}
+    else {const next={equity:$('mEquity').textContent,positions:$('mPositions').textContent,orders:$('mOrders').textContent};if(state.accountSnapshot && JSON.stringify(next)!==JSON.stringify(state.accountSnapshot))await notify('تحديث حساب GT CRYPTO APIs','تم رصد تغيير في ملخص الحساب أو المراكز أو الأوامر. افتح التطبيق للمراجعة.','gt-bybit-account-change');state.accountSnapshot=next;setStatus('ok','متصل بالمصدر');if(showToast)toast('تم تحديث بيانات الحساب.','success');}
   } finally {state.refreshing=false;updateConnectivity();}
 }
 $('connectBtn').addEventListener('click',connect);
@@ -432,7 +430,7 @@ async function boot(){
   setUnlocked(false);navigate(new URL(location.href).searchParams.get('view'));updateOrderFields();updateNotificationState();
   const results=await Promise.allSettled([api('health',{allowLocked:true}),api('session',{allowLocked:true}),registerServiceWorker(),monitorNotificationPermission()]);
   const health=results[0].status==='fulfilled'?results[0].value:null;
-  if(health){state.region=health.region;state.mutationsEnabled=health.mutationsEnabled;state.accountFrozen=health.accountFrozen===true;state.demoMode=health.financialDataMode==='presentation';updateFinancialModeUi();renderAccountRestriction(health);$('regionLabel').textContent=state.region;$('settingsRegion').textContent=state.region;$('mutationsState').textContent=state.demoMode?'غير متاحة':state.accountFrozen?'مقيدة':state.mutationsEnabled?'مفعّل بتأكيد يدوي':'معطّل';$('preAuthState').textContent=!health.sessionStoreReady?'خدمة الجلسات غير مهيأة':!health.controlReady?'رمز التحكم غير مهيأ':!health.bybitConfigured?'مفاتيح Bybit غير مهيأة':state.demoMode?'الخدمة غير متاحة حاليًا':state.accountFrozen?'الحساب قيد المراجعة':'جاهز لتسجيل الدخول';setStatus(health.controlReady?'idle':'error',health.controlReady?(state.demoMode?'غير متاح':state.accountFrozen?'مقيد':'مقفلة'):'الإعداد غير مكتمل');}
+  if(health){state.region=health.region;state.mutationsEnabled=health.mutationsEnabled;state.accountFrozen=health.accountFrozen===true;state.demoMode=health.financialDataMode==='presentation';updateFinancialModeUi();renderAccountRestriction(health);$('regionLabel').textContent=state.region;$('settingsRegion').textContent=state.region;$('mutationsState').textContent=state.demoMode?'غير متاحة':state.accountFrozen?'مقيدة':state.mutationsEnabled?'مفعّل بتأكيد يدوي':'معطّل';$('preAuthState').textContent=!health.sessionStoreReady?'خدمة الجلسات غير مهيأة':!health.controlReady?'رمز التحكم غير مهيأ':!health.bybitConfigured?'مفاتيح الاتصال غير مهيأة':state.demoMode?'الخدمة غير متاحة حاليًا':state.accountFrozen?'الحساب قيد المراجعة':'جاهز لتسجيل الدخول';setStatus(health.controlReady?'idle':'error',health.controlReady?(state.demoMode?'غير متاح':state.accountFrozen?'مقيد':'مقفلة'):'الإعداد غير مكتمل');}
   else{$('preAuthState').textContent=navigator.onLine?'تعذر الوصول إلى الخدمة':'غير متصل بالإنترنت';setStatus('error','غير متاح');}
   if(results[1].status==='fulfilled' && results[1].value.authenticated)await applySession(results[1].value);
   updateConnectivity();
