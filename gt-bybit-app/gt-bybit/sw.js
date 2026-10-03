@@ -15,7 +15,8 @@ const STATIC=[
   `/gt-bybit/validation.js?v=${VERSION}`,
   '/gt-bybit/manifest.webmanifest',
   '/assets/gt-crypto/character.png',
-  '/assets/gt-crypto/scene-watermark.png',\n  '/assets/gt-crypto/bybit-icon.svg',
+  '/assets/gt-crypto/scene-watermark.png',
+  '/assets/gt-crypto/bybit-icon.svg',
 ];
 const ALLOWED=new Set(STATIC.map((path)=>new URL(path,self.location.origin).pathname));
 
