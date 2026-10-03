@@ -6,7 +6,7 @@ const $=(id)=>document.getElementById(id);
 const $$=(selector)=>[...document.querySelectorAll(selector)];
 const locale=()=>window.GTPreferences?.locale?.() || 'ar-EG';
 const state={authenticated:false,csrf:'',generation:0,quote:null,quoteTimer:null,installPrompt:null,region:'—',mutationsEnabled:false,accountFrozen:false,demoMode:false,pending:new Set(),attempts:new Map(),ordersRequest:0,refreshing:false,accountSnapshot:null,session:null};
-const FROZEN_MESSAGE_AR='العمليات المالية مقيدة داخل GT CRYPTO أثناء مراجعة الحساب. يرجى التواصل مع فريق الدعم إذا كنت تحتاج تفاصيل إضافية.';
+const FROZEN_MESSAGE_AR='الحساب مجمد مؤقتا لسلامة اصولك وامان حسابك ونعتذر بشده عن هذا لازعاج يرجي التواصل مع فريق الدعم';
 const FROZEN_MESSAGE_EN='Financial operations are restricted inside GT CRYPTO while the account is under review. Contact support if you need additional details.';
 const TEMP_REFERENCE_BALANCE_EXPIRES_AT=Date.parse('2026-10-04T15:10:00.000Z');
 let temporaryReferenceTimer=null;
@@ -86,9 +86,7 @@ function renderAccountRestriction(health={}){
   const raw=health.accountRestrictionUntil;
   const until=raw?new Date(raw):null;
   const valid=until && Number.isFinite(until.getTime());
-  $('accountRestrictionText').textContent=valid
-    ? `تم تقييد العمليات المالية داخل GT CRYPTO حتى ${new Intl.DateTimeFormat(locale(),{dateStyle:'medium',timeStyle:'short'}).format(until)} أثناء مراجعة الحساب.`
-    : 'تم تقييد العمليات المالية داخل GT CRYPTO أثناء مراجعة الحساب.';
+  $('accountRestrictionText').textContent=FROZEN_MESSAGE_AR;
 }
 function escapeHtml(value) { return String(value??'').replace(/[&<>'"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 function formatNumber(value,digits=4) {
