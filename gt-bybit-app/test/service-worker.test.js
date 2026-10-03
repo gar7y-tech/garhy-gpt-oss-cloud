@@ -32,4 +32,5 @@ test('service worker caches P2P shell, receipts, and approved brand assets inclu
   assert.match(source,/receipts\.js/);
   assert.match(source,/\/assets\/gt-crypto\/character\.png/);
   assert.match(source,/\/assets\/gt-crypto\/scene-watermark\.png/);
+  assert.match(source,/\/assets\/gt-crypto\/bybit-icon\.svg/);
 });
