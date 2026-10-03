@@ -15,7 +15,7 @@ const manifest=JSON.parse(await readFile(new URL('gt-bybit/manifest.webmanifest'
 const html=await readFile(new URL('gt-bybit/index.html',root),'utf8');
 const p2pHtml=await readFile(new URL('gt-bybit/p2p.html',root),'utf8');
 const worker=await readFile(new URL('gt-bybit/sw.js',root),'utf8');
-const allowedImages=['assets/gt-crypto/character.png','assets/gt-crypto/scene-watermark.png'];
+const allowedImages=['assets/gt-crypto/character.png','assets/gt-crypto/scene-watermark.png','assets/gt-crypto/bybit-icon.svg'];
 
 assert.match(html,/<html lang="ar" dir="rtl">/);
 assert.match(html,/id="secureApp"[^>]*hidden/);
@@ -29,7 +29,7 @@ for(const page of [html,p2pHtml]) {
   }
 }
 
-assert.ok(!('icons' in manifest),'Manifest must not request an image icon');
+assert.ok(Array.isArray(manifest.icons) && manifest.icons.some((icon)=>icon.src==='/assets/gt-crypto/bybit-icon.svg' && icon.type==='image/svg+xml'),'Manifest must use the approved Bybit application icon');
 
 assert.equal(manifest.start_url,'/');
 assert.equal(manifest.scope,'/');
@@ -73,6 +73,6 @@ async function scan(url,prefix='') {
   }
 }
 await scan(root);
-assert.deepEqual(imageFiles.sort(),allowedImages.sort(),'Only the approved character and watermark images may be tracked');
+assert.deepEqual(imageFiles.sort(),allowedImages.sort(),'Only the approved character, watermark, and Bybit application icon may be tracked');
 
-console.log('Syntax, HTML/CSP, local assets, PWA, receipt shell, and exact two-image inventory passed.');
+console.log('Syntax, HTML/CSP, local assets, PWA icon, receipt shell, and approved image inventory passed.');
