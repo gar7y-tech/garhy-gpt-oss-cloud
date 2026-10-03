@@ -109,7 +109,8 @@ export function createReceipt({channel,action,requestId=null,request={},result={
   const safeRequest=sanitizeReceiptValue(request);
   const safeResult=sanitizeReceiptValue(result);
   const timestamp=new Date(now).toISOString();
-  const core={channel:String(channel),action:String(action),status:'ACCEPTED',timestamp,requestId:requestId ? String(requestId) : null,request:safeRequest,result:safeResult};
+  const publicChannel=String(channel).toUpperCase()==='BYBIT'?'GT CRYPTO':String(channel);
+  const core={channel:publicChannel,action:String(action),status:'ACCEPTED',timestamp,requestId:requestId ? String(requestId) : null,request:safeRequest,result:safeResult};
   const integrity=crypto.createHash('sha256').update(JSON.stringify(core)).digest('hex');
   const receiptId=`GTB-${now.toString(36).toUpperCase()}-${integrity.slice(0,10).toUpperCase()}`;
   const receipt={receiptId,...core,integrity};
