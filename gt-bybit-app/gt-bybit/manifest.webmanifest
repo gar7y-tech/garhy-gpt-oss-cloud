@@ -10,8 +10,8 @@
     "standalone"
   ],
   "orientation": "any",
-  "background_color": "#03122b",
-  "theme_color": "#071b3d",
+  "background_color": "#0B0E11",
+  "theme_color": "#0B0E11",
   "lang": "ar",
   "dir": "rtl",
   "categories": [
@@ -33,7 +33,7 @@
   ],
   "icons": [
     {
-      "src": "/assets/gt-crypto/bybit-icon.svg",
+      "src": "/assets/gt-crypto/gt-crypto-mark.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"

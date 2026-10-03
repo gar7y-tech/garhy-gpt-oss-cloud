@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="GT CRYPTO">
+  <title>GT CRYPTO</title>
+  <rect width="1024" height="1024" rx="220" fill="#0B0E11"/>
+  <rect x="56" y="56" width="912" height="912" rx="178" fill="none" stroke="#252A30" stroke-width="24"/>
+  <path d="M474 302H342c-70 0-118 48-118 118v184c0 70 48 118 118 118h146V548H366" fill="none" stroke="#F5F6F7" stroke-width="74" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M566 302h250M691 302v420" fill="none" stroke="#F5F6F7" stroke-width="74" stroke-linecap="square"/>
+  <path d="M826 302v420" fill="none" stroke="#F7A600" stroke-width="46" stroke-linecap="square"/>
+</svg>
