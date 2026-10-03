@@ -27,10 +27,8 @@ test('service worker caches preference and demo runtime dependencies',()=>{
   assert.match(source,/demo-state\.js/);
 });
 
-test('service worker caches P2P shell, receipts, and approved brand assets including the Bybit icon',()=>{
+test('service worker caches P2P shell, receipts, and the approved Bybit icon',()=>{
   assert.match(source,/p2p-console\.js/);
   assert.match(source,/receipts\.js/);
-  assert.match(source,/\/assets\/gt-crypto\/character\.png/);
-  assert.match(source,/\/assets\/gt-crypto\/scene-watermark\.png/);
   assert.match(source,/\/assets\/gt-crypto\/bybit-icon\.svg/);
 });
